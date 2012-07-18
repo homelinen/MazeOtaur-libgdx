@@ -1,12 +1,16 @@
 package uk.calumgilchrist.mazeotaur;
 
 /**
- * One cell in the maze
+ * One cell or tile in a maze
  */
 public class Cell {
 
 	private boolean passable;
 	
+	/**
+	 * Create a new cell
+	 * @param passable - Wall or floor?
+	 */
 	public Cell(boolean passable) {
 		this.passable = passable;
 	}
