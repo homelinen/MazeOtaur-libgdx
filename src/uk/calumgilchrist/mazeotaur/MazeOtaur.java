@@ -2,6 +2,7 @@ package uk.calumgilchrist.mazeotaur;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
@@ -18,20 +19,26 @@ import com.badlogic.gdx.utils.Logger;
 
 public class MazeOtaur implements ApplicationListener {
 	private OrthographicCamera camera;
+	
+	private InputController inputCon;
+	
 	private SpriteBatch batch;
 	private Texture texture;
 	private Sprite sprite;
 	
 	private MazeTemplate maze;
 	
-	private float cellHeight;
-	private float cellWidth;
+	private float cellSize;
 	
 	private Texture passTex;
 	private Texture wallTex;
 	
 	Player player;
 	private Texture playerTex;
+	
+	private float deltaMult;
+	
+	private final static int IDEAL_TIME = 30;
 	
 	@Override
 	public void create() {
@@ -41,6 +48,9 @@ public class MazeOtaur implements ApplicationListener {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false);
 		camera.update();
+		
+		inputCon = new InputController();
+		deltaMult = 0;
 		
 		batch = new SpriteBatch();
 		
@@ -59,8 +69,7 @@ public class MazeOtaur implements ApplicationListener {
 		//Load and draw maze
 		maze = new MazeTemplate(mazeWidth, mazeHeight);
 		
-		cellWidth = Gdx.graphics.getWidth() / (float) mazeWidth;
-		cellHeight = Gdx.graphics.getHeight() / (float) mazeHeight;
+		cellSize = Gdx.graphics.getHeight() / (float) mazeHeight;
 		
 		FileHandle mazeFile = Gdx.files.internal("openmaze.txt");
 		if  (mazeFile.exists()) {
@@ -95,15 +104,15 @@ public class MazeOtaur implements ApplicationListener {
 		
 		for (int x=0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
-				xPos = x * cellWidth;
-				yPos = yOffset - (y * cellHeight);
+				xPos = x * cellSize;
+				yPos = yOffset - (y * cellSize);
 				
 				if (maze.getCell(x,y).isPassable()) {
 					//Draw a white square
-					batch.draw(passTex, xPos, yPos, cellWidth, cellHeight);
+					batch.draw(passTex, xPos, yPos, cellSize, cellSize);
 				} else {
 					//Draw a black square
-					batch.draw(wallTex, xPos, yPos, cellWidth, cellHeight);
+					batch.draw(wallTex, xPos, yPos, cellSize, cellSize);
 				}
 			}
 		}
@@ -115,8 +124,9 @@ public class MazeOtaur implements ApplicationListener {
 	 */
 	public void drawPlayer(SpriteBatch batch) {
 		
-		Vector2 playPos = player.getPosition().cpy().add(0, getScreenOffset());
-		Gdx.app.log("PlayerPos", "" + playPos);
+		Vector2 playPos = player.getPosition().cpy();
+		playPos.mul(cellSize);
+		playPos.add(0, getScreenOffset());
 		
 		batch.draw(playerTex, playPos.x, playPos.y);
 	}
@@ -124,7 +134,7 @@ public class MazeOtaur implements ApplicationListener {
 	public void setUpPlayerTexture() {
 		
 		//Should be size of cell
-		int circleDiameter = (int) cellHeight;
+		int circleDiameter = (int) cellSize;
 		int circRadius = circleDiameter / 2;
 		Pixmap circle = new Pixmap(circleDiameter, circleDiameter, Format.RGBA8888);
 		
@@ -140,7 +150,7 @@ public class MazeOtaur implements ApplicationListener {
 	 * @param y
 	 */
 	public float getScreenOffset() {
-		return Gdx.graphics.getHeight() - cellHeight;
+		return Gdx.graphics.getHeight() - cellSize;
 	}
 	
 	@Override
@@ -154,6 +164,7 @@ public class MazeOtaur implements ApplicationListener {
 
 	@Override
 	public void render() {		
+		
 		Gdx.gl.glClearColor(0.5f, 0.1f, 1, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
@@ -166,7 +177,22 @@ public class MazeOtaur implements ApplicationListener {
 			drawMaze(maze, batch);
 			drawPlayer(batch);
 		batch.end();
-		Gdx.app.log("FPS", ""+ Gdx.graphics.getFramesPerSecond());
+		//Gdx.app.log("FPS", ""+ Gdx.graphics.getFramesPerSecond());
+
+		inputCon.poll();
+		deltaMult = IDEAL_TIME/Gdx.graphics.getDeltaTime();
+
+		if (inputCon.isKeyPressed(Input.Keys.LEFT)) {
+			player.setChangeX(-1);
+		} else if (inputCon.isKeyPressed(Input.Keys.RIGHT)) {
+			player.setChangeX(1);
+		} else if (inputCon.isKeyPressed(Input.Keys.DOWN)) {
+			player.setChangeY(-1);
+		} else if (inputCon.isKeyPressed(Input.Keys.UP)) {
+			player.setChangeY(1);
+		}
+		
+		player.move(deltaMult);
 	}
 
 	@Override
