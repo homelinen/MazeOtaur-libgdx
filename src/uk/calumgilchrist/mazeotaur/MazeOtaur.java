@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Logger;
 
 public class MazeOtaur implements ApplicationListener {
@@ -17,6 +18,12 @@ public class MazeOtaur implements ApplicationListener {
 	private SpriteBatch batch;
 	private Texture texture;
 	private Sprite sprite;
+	
+	private MazeTemplate maze;
+	private SpriteBatch drawMaze;
+	
+	private Texture passTex;
+	private Texture wallTex;
 	
 	@Override
 	public void create() {
@@ -26,7 +33,8 @@ public class MazeOtaur implements ApplicationListener {
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 		
-		camera = new OrthographicCamera(1, h/w);
+		camera = new OrthographicCamera();
+		camera.setToOrtho(false, 800, 600);
 		batch = new SpriteBatch();
 		
 		texture = new Texture(Gdx.files.internal("data/libgdx.png"));
@@ -40,7 +48,7 @@ public class MazeOtaur implements ApplicationListener {
 		sprite.setPosition(-sprite.getWidth()/2, -sprite.getHeight()/2);
 		
 		//Load and draw maze
-		MazeTemplate maze = new MazeTemplate(20, 20);
+		maze = new MazeTemplate(10, 10);
 		
 		FileHandle mazeFile = Gdx.files.internal("amaze.txt");
 		if  (mazeFile.exists()) {
@@ -48,24 +56,59 @@ public class MazeOtaur implements ApplicationListener {
 		} else {
 			Gdx.app.error("MazeFile", "Maze file not found!");
 		}
-		Gdx.app.debug("\nMaze\n", maze.printMaze());
+		Gdx.app.debug("\nMaze", maze.printMaze());
 		
+	}
+	
+	/**
+	 * Go through the given maze and display the passable cells
+	 * @param maze
+	 */
+	public void drawMaze(MazeTemplate maze, SpriteBatch batch) {
+		int width = maze.getWidth();
+		int height = maze.getHeight();
+		
+		// Set up textures
+		// TODO: Don't load files like this
+		passTex = new Texture(Gdx.files.internal("passable.png"));
+		wallTex = new Texture(Gdx.files.internal("wall.png"));
+		
+		int cellWidth = Gdx.graphics.getWidth() / width;
+		int cellHeight = Gdx.graphics.getHeight() / height;
+		
+		for (int i=0; i < width - 1; i++) {
+			for (int j = 0; j < height - 1; j++) {
+				if (maze.getCell(i,j).isPassable()) {
+					//Draw a white square
+					batch.draw(passTex, i * cellWidth, j * cellHeight, 0, 0, cellWidth, cellHeight);
+				} else {
+					//Draw a black square
+					batch.draw(wallTex, i * cellWidth, j * cellHeight, 0, 0, cellWidth, cellHeight);
+				}
+			}
+		}
 	}
 
 	@Override
 	public void dispose() {
 		batch.dispose();
 		texture.dispose();
+		passTex.dispose();
+		wallTex.dispose();
 	}
 
 	@Override
 	public void render() {		
-		Gdx.gl.glClearColor(1, 1, 1, 1);
+		Gdx.gl.glClearColor(0.5f, 0.1f, 1, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		
+		camera.update();
 		
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		sprite.draw(batch);
+		//sprite.draw(batch);
+		
+		drawMaze(maze, batch);
 		batch.end();
 	}
 
