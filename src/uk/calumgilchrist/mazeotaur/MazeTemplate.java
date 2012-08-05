@@ -37,14 +37,16 @@ public class MazeTemplate {
 	public void createMaze(FileHandle mazeFile) {
 		BufferedReader mazeReader = new BufferedReader(mazeFile.reader());
 		
-		int read = 2;
+		int read = 0;
 		int x = 0;
 		int y = 0;
 		
 		try {
+			read = mazeReader.read();
+					
 			do {
 				if (read == '1') {
-					maze[x][y].setPassable(true);
+					maze[y][x].setPassable(true);
 				} else if (read == '\n') {
 					// At end of line, move to new row
 					y++;
@@ -70,10 +72,10 @@ public class MazeTemplate {
 		boolean passable = false;
 		
 		// Go through all cells
-		for (int i = 0; i < width - 1; i++) {
-			for (int j = 0; j < height -1; j++) {
+		for (int x = 0; x < width - 1; x++) {
+			for (int y = 0; y < height -1; y++) {
 				// Set as impassible
-				maze[i][j] = new Cell(passable);
+				maze[x][y] = new Cell(passable);
 			}
 		}
 	}
@@ -89,9 +91,9 @@ public class MazeTemplate {
 	public String printMaze() {
 		String output = "";
 		
-		for (int i=0; i < width - 1; i++) {
-			for (int j=0; j < height -1; j++) {
-				if (maze[i][j].isPassable()) {
+		for (int x=0; x < width -1; x++) {
+			for (int y=0; y < height - 1; y++) {
+				if (maze[x][y].isPassable()) {
 					output += "1";
 				} else {
 					output += "0";
