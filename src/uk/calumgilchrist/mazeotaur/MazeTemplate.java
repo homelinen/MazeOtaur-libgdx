@@ -41,6 +41,7 @@ public class MazeTemplate {
 		int x = 0;
 		int y = 0;
 		
+		//TODO: Add checks for maze size, or get size from file
 		try {
 			read = mazeReader.read();
 					
@@ -72,8 +73,8 @@ public class MazeTemplate {
 		boolean passable = false;
 		
 		// Go through all cells
-		for (int x = 0; x < width - 1; x++) {
-			for (int y = 0; y < height -1; y++) {
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
 				// Set as impassible
 				maze[x][y] = new Cell(passable);
 			}
@@ -91,8 +92,8 @@ public class MazeTemplate {
 	public String printMaze() {
 		String output = "";
 		
-		for (int x=0; x < width -1; x++) {
-			for (int y=0; y < height - 1; y++) {
+		for (int x=0; x < width; x++) {
+			for (int y=0; y < height; y++) {
 				if (maze[x][y].isPassable()) {
 					output += "1";
 				} else {
