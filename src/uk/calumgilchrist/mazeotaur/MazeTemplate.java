@@ -5,7 +5,6 @@ import java.io.IOException;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.Logger;
 
 /**
  * Holds a template of a maze from a file

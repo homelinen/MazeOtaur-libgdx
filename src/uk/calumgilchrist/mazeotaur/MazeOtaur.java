@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Logger;
 
 public class MazeOtaur implements ApplicationListener {
@@ -20,7 +19,6 @@ public class MazeOtaur implements ApplicationListener {
 	private Sprite sprite;
 	
 	private MazeTemplate maze;
-	private SpriteBatch drawMaze;
 	
 	private Texture passTex;
 	private Texture wallTex;
@@ -29,9 +27,6 @@ public class MazeOtaur implements ApplicationListener {
 	public void create() {
 		
 		Gdx.app.setLogLevel(Logger.DEBUG);
-		
-		float w = Gdx.graphics.getWidth();
-		float h = Gdx.graphics.getHeight();
 		
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 600);
@@ -76,14 +71,14 @@ public class MazeOtaur implements ApplicationListener {
 		int cellWidth = Gdx.graphics.getWidth() / width;
 		int cellHeight = Gdx.graphics.getHeight() / height;
 		
-		for (int i=0; i < width - 1; i++) {
-			for (int j = 0; j < height - 1; j++) {
-				if (maze.getCell(i,j).isPassable()) {
+		for (int x=0; x < width - 1; x++) {
+			for (int y = 0; y < height - 1; y++) {
+				if (maze.getCell(x,y).isPassable()) {
 					//Draw a white square
-					batch.draw(passTex, i * cellWidth, j * cellHeight, 0, 0, cellWidth, cellHeight);
+					batch.draw(passTex, x * cellWidth, y * cellHeight, cellWidth, cellHeight);
 				} else {
 					//Draw a black square
-					batch.draw(wallTex, i * cellWidth, j * cellHeight, 0, 0, cellWidth, cellHeight);
+					batch.draw(wallTex, x * cellWidth, y * cellHeight, cellWidth, cellHeight);
 				}
 			}
 		}
