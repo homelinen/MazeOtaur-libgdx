@@ -1,10 +1,11 @@
 package uk.calumgilchrist.mazeotaur;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
 public class Player extends Creature {
 
-	public static final float SPEED_CONST = 0.08f;
+	public static final float SPEED_CONST = 0.12f;
 	
 	private float timeFromLastMove;
 	
@@ -31,6 +32,14 @@ public class Player extends Creature {
 	 */
 	public void update() {
 		
+	}
+	
+	/**
+	 * Set delta movements to 0
+	 */
+	public void resetMovement() {
+		changex = 0;
+		changey = 0;
 	}
 	
 	/**
@@ -61,18 +70,28 @@ public class Player extends Creature {
 		
 		if (timeFromLastMove > SPEED_CONST && (changex != 0 || changey != 0)) {
 			
-			Vector2 curPos = getPosition().cpy();
-			Vector2 changePos = new Vector2(changex, changey);
-			setPosition(curPos.add(changePos));
 			
+			setPosition(findNextPos());
+			
+			Gdx.app.log("Player moved", getPosition().toString());
 			//Moved, reset timer
 			timeFromLastMove = 0;
 		} else {
 			timeFromLastMove += deltaMult;
 		}
 		
-		// Reset delta x and y
-		changex = 0;
-		changey = 0;
+		resetMovement();
+	}
+	
+	/**
+	 * Find the next point the player will reach
+	 * 
+	 * @return The next point the player will be going to
+	 */
+	public Vector2 findNextPos() {
+		Vector2 curPos = getPosition().cpy();
+		Vector2 changePos = new Vector2(changex, changey);
+		
+		return curPos.add(changePos);
 	}
 }

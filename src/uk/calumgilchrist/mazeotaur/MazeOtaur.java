@@ -187,12 +187,17 @@ public class MazeOtaur implements ApplicationListener {
 		} else if (inputCon.isKeyPressed(Input.Keys.RIGHT)) {
 			player.setChangeX(1);
 		} else if (inputCon.isKeyPressed(Input.Keys.DOWN)) {
-			player.setChangeY(-1);
-		} else if (inputCon.isKeyPressed(Input.Keys.UP)) {
 			player.setChangeY(1);
+		} else if (inputCon.isKeyPressed(Input.Keys.UP)) {
+			player.setChangeY(-1);
 		}
 		
-		player.move(deltaMult);
+		if (maze.getCell(player.findNextPos()).isPassable()) {
+			player.move(deltaMult);
+		} else {
+			player.resetMovement();
+		}
+		
 	}
 
 	@Override
