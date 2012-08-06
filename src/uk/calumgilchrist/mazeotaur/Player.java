@@ -94,4 +94,12 @@ public class Player extends Creature {
 		
 		return curPos.add(changePos);
 	}
+	
+	public int getChangeX() {
+		return changex;
+	}
+	
+	public int getChangeY() {
+		return changey;
+	}
 }
