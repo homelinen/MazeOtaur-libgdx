@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.math.Vector2;
 
 /**
  * Holds a template of a maze from a file
@@ -118,15 +119,24 @@ public class MazeTemplate {
 	 * Return the cell from the array at x, y
 	 * @param x
 	 * @param y
-	 * @return
+	 * @return The cell at position (x, y)
 	 */
 	public Cell getCell(int x, int y) {
 		
 		if (x >= 0 && x < getHeight() && y >= 0 && y < getHeight()) {
 			return maze[x][y];
 		} else {
-			Gdx.app.log("GetCell", "Non valid maze co-ord");
+			Gdx.app.log("GetCell", "Non valid maze co-ord: " + x + ", " + y);
 			return null;
 		}
+	}
+	
+	/**
+	 * Return the cell from the given vector
+	 * @param pos The position to check
+	 * @return The cell at pos
+	 */
+	public Cell getCell(Vector2 pos) {
+		return getCell((int) pos.x, (int) pos.y);
 	}
 }
