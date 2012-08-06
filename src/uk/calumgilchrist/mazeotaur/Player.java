@@ -4,7 +4,9 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Player extends Creature {
 
-	public static final float MOVE_SPEED = 0.005f;
+	public static final float SPEED_CONST = 0.08f;
+	
+	private float timeFromLastMove;
 	
 	private int changex;
 	private int changey;
@@ -21,6 +23,7 @@ public class Player extends Creature {
 		
 		changex = 0;
 		changey = 0;
+		timeFromLastMove = 0;
 	}
 	
 	/**
@@ -55,13 +58,18 @@ public class Player extends Creature {
 	 * @param maze 
 	 */
 	public void move(float deltaMult) {
-
-		float multiplier = deltaMult * MOVE_SPEED;
 		
-		Vector2 curPos = getPosition().cpy();
-		Vector2 changeMul = new Vector2(changex, changey).mul(multiplier);
-		
-		setPosition(curPos.add(changeMul));
+		if (timeFromLastMove > SPEED_CONST && (changex != 0 || changey != 0)) {
+			
+			Vector2 curPos = getPosition().cpy();
+			Vector2 changePos = new Vector2(changex, changey);
+			setPosition(curPos.add(changePos));
+			
+			//Moved, reset timer
+			timeFromLastMove = 0;
+		} else {
+			timeFromLastMove += deltaMult;
+		}
 		
 		// Reset delta x and y
 		changex = 0;

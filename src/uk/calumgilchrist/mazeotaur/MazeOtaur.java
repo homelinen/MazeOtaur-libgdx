@@ -180,7 +180,7 @@ public class MazeOtaur implements ApplicationListener {
 		//Gdx.app.log("FPS", ""+ Gdx.graphics.getFramesPerSecond());
 
 		inputCon.poll();
-		deltaMult = IDEAL_TIME/Gdx.graphics.getDeltaTime();
+		deltaMult = Gdx.graphics.getDeltaTime();
 
 		if (inputCon.isKeyPressed(Input.Keys.LEFT)) {
 			player.setChangeX(-1);
