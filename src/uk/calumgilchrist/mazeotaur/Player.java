@@ -47,18 +47,34 @@ public class Player extends Creature {
 	 * @param x direction
 	 */
 	public void setChangeX(int x) {
-		changex = x;
+		changex = findQuotient(x);
 	}
 	
 	/**
 	 * Where the player should move next on the y-axis
-	 * TODO: Capture y > 1 or y < -1
 	 * TODO: Use an enum rather than an Int, or simply a static constant
 	 * 
 	 * @param y direction
 	 */
 	public void setChangeY(int y) {
-		changey = y;
+		changey = findQuotient(y);
+	}
+	
+	/**
+	 * Take a number and reduce it to 1 or -1
+	 * @param input 
+	 * @return Reduced number
+	 */
+	private int findQuotient(int input) {
+		if (input != 0) {
+			int out = 0;
+			
+			out = input/Math.abs(input);
+			return out;
+		
+		} else {
+			return input;
+		}
 	}
 
 	/**
