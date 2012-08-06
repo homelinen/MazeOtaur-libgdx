@@ -117,6 +117,8 @@ public class MazeTemplate {
 
 	/**
 	 * Return the cell from the array at x, y
+	 * 
+	 * TODO: Check for out of bounds
 	 * @param x
 	 * @param y
 	 * @return The cell at position (x, y)

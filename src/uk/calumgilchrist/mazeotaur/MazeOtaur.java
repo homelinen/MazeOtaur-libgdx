@@ -125,10 +125,13 @@ public class MazeOtaur implements ApplicationListener {
 	public void drawPlayer(SpriteBatch batch) {
 		
 		Vector2 playPos = player.getPosition().cpy();
-		playPos.mul(cellSize);
-		playPos.add(0, getScreenOffset());
+		Vector2 realPos = new Vector2(0, getScreenOffset());
 		
-		batch.draw(playerTex, playPos.x, playPos.y);
+		playPos.mul(cellSize);
+		realPos.add(playPos.x, - playPos.y);
+		
+		
+		batch.draw(playerTex, realPos.x, realPos.y);
 	}
 
 	public void setUpPlayerTexture() {
