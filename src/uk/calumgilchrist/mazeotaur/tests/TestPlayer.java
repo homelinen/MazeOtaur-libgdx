@@ -24,37 +24,42 @@ public class TestPlayer {
 		name = "Player1";
 		
 		player = new Player(health, name, startPos);
+		
+		player.setTimeFromLastMove(1000);
 	}
 
 	@Test
 	public void testPlayer() {
 		assertEquals("Initial Health is Unchanged", health, player.getHealth());
 		assertSame("Name is as Started", name, player.getName());
-		assertSame("Player position is same as start position", new Vector2(0, 0), player.getPosition());
+		assertSame("Player position is same as start position", startPos, player.getPosition());
 	}
 
 	@Test
 	public void testMove() {
-		int deltaMult = 0;
+		float deltaMult = 0;
 		float speedConst = 0.12f;
 		
 		assertSame(startPos, player.getPosition());
 		
 		setUp();
-		preTest();
 		player.move(deltaMult);
-		assertSame(startPos, player.getPosition());
+		assertSame("Player has not moved", startPos, player.getPosition());
 		
 		setUp();
-		preTest();
 		player.move(speedConst);
-		assertSame(startPos, player.getPosition());
+		assertSame("Player has not moved", startPos, player.getPosition());
 		
 		setUp();
 		preTest();
-		deltaMult = 1;
+		
+		deltaMult = 1f;
 		player.move(deltaMult);
-		assertNotSame(startPos, player.getPosition());
+
+		assertNotSame("Player has moved", startPos, player.getPosition());
+		
+		assertEquals("ChangeX has been reset", 0, player.getChangeX());
+		assertEquals("ChangeY has been reset", 0, player.getChangeY());
 		
 	}
 
@@ -122,9 +127,12 @@ public class TestPlayer {
 	}
 	
 	public void preTest() {
-		player.setChangeX(1);
-		player.setChangeY(-1);
+		int deltaMove = 1;
+		
+		player.setChangeX(deltaMove);
+		assertEquals(deltaMove, player.getChangeX());
+		
+		player.setChangeY(deltaMove);
+		assertEquals(deltaMove, player.getChangeY());
 	}
-	
-
 }

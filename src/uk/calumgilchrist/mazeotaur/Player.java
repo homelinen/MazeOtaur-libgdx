@@ -8,7 +8,7 @@ public class Player extends Creature {
 	public static final float SPEED_CONST = 0.12f;
 	
 	private float timeFromLastMove;
-	
+
 	private int changex;
 	private int changey;
 	
@@ -69,11 +69,8 @@ public class Player extends Creature {
 	public void move(float deltaMult) {
 		
 		if (timeFromLastMove > SPEED_CONST && (changex != 0 || changey != 0)) {
-			
-			
 			setPosition(findNextPos());
 			
-			Gdx.app.log("Player moved", getPosition().toString());
 			//Moved, reset timer
 			timeFromLastMove = 0;
 		} else {
@@ -102,4 +99,15 @@ public class Player extends Creature {
 	public int getChangeY() {
 		return changey;
 	}
+
+	/**
+	 * Getter for timeFromLastMove
+	 * 
+	 * Only used in tests
+	 * @param timeFromLastMove
+	 */
+	public void setTimeFromLastMove(float timeFromLastMove) {
+		this.timeFromLastMove = timeFromLastMove;
+	}
+	
 }
