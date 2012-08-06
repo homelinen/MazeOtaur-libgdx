@@ -35,6 +35,7 @@ public class MazeOtaur implements ApplicationListener {
 	
 	Player player;
 	private Texture playerTex;
+	private Cell playerCell;
 	
 	private float deltaMult;
 	
@@ -195,7 +196,8 @@ public class MazeOtaur implements ApplicationListener {
 			player.setChangeY(-1);
 		}
 		
-		if (maze.getCell(player.findNextPos()).isPassable()) {
+		playerCell = maze.getCell(player.findNextPos());
+		if (playerCell != null && playerCell.isPassable()) {
 			player.move(deltaMult);
 		} else {
 			player.resetMovement();
