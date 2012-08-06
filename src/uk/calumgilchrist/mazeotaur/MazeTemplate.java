@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.math.Vector2;
 
 /**
  * Holds a template of a maze from a file
@@ -37,14 +38,17 @@ public class MazeTemplate {
 	public void createMaze(FileHandle mazeFile) {
 		BufferedReader mazeReader = new BufferedReader(mazeFile.reader());
 		
-		int read = 2;
+		int read = 0;
 		int x = 0;
 		int y = 0;
 		
+		//TODO: Add checks for maze size, or get size from file
 		try {
+			read = mazeReader.read();
+					
 			do {
 				if (read == '1') {
-					maze[x][y].setPassable(true);
+					maze[y][x].setPassable(true);
 				} else if (read == '\n') {
 					// At end of line, move to new row
 					y++;
@@ -70,10 +74,10 @@ public class MazeTemplate {
 		boolean passable = false;
 		
 		// Go through all cells
-		for (int i = 0; i < width - 1; i++) {
-			for (int j = 0; j < height -1; j++) {
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
 				// Set as impassible
-				maze[i][j] = new Cell(passable);
+				maze[x][y] = new Cell(passable);
 			}
 		}
 	}
@@ -89,9 +93,9 @@ public class MazeTemplate {
 	public String printMaze() {
 		String output = "";
 		
-		for (int i=0; i < width - 1; i++) {
-			for (int j=0; j < height -1; j++) {
-				if (maze[i][j].isPassable()) {
+		for (int x=0; x < width; x++) {
+			for (int y=0; y < height; y++) {
+				if (maze[x][y].isPassable()) {
 					output += "1";
 				} else {
 					output += "0";
@@ -113,17 +117,28 @@ public class MazeTemplate {
 
 	/**
 	 * Return the cell from the array at x, y
+	 * 
+	 * TODO: Check for out of bounds
 	 * @param x
 	 * @param y
-	 * @return
+	 * @return The cell at position (x, y)
 	 */
 	public Cell getCell(int x, int y) {
 		
 		if (x >= 0 && x < getHeight() && y >= 0 && y < getHeight()) {
 			return maze[x][y];
 		} else {
-			Gdx.app.log("GetCell", "Non valid maze co-ord");
+			Gdx.app.log("GetCell", "Non valid maze co-ord: " + x + ", " + y);
 			return null;
 		}
+	}
+	
+	/**
+	 * Return the cell from the given vector
+	 * @param pos The position to check
+	 * @return The cell at pos
+	 */
+	public Cell getCell(Vector2 pos) {
+		return getCell((int) pos.x, (int) pos.y);
 	}
 }
