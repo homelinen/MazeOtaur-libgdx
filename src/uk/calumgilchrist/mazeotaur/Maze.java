@@ -77,7 +77,6 @@ public class Maze {
 		if (x >= 0 && x < getWidth() && y >= 0 && y < getHeight()) {
 			return maze[x][y];
 		} else {
-			Gdx.app.log("GetCell", "Non valid maze co-ord: " + x + ", " + y);
 			return null;
 		}
 	}
