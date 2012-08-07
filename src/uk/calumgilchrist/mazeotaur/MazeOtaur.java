@@ -10,10 +10,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Logger;
 
@@ -23,8 +20,6 @@ public class MazeOtaur implements ApplicationListener {
 	private InputController inputCon;
 	
 	private SpriteBatch batch;
-	private Texture texture;
-	private Sprite sprite;
 	
 	private MazeTemplate maze;
 	
@@ -37,10 +32,6 @@ public class MazeOtaur implements ApplicationListener {
 	private Texture playerTex;
 	private Cell playerCell;
 	
-	private float deltaMult;
-	
-	private final static int IDEAL_TIME = 30;
-	
 	@Override
 	public void create() {
 		
@@ -51,19 +42,8 @@ public class MazeOtaur implements ApplicationListener {
 		camera.update();
 		
 		inputCon = new InputController();
-		deltaMult = 0;
 		
 		batch = new SpriteBatch();
-		
-		texture = new Texture(Gdx.files.internal("data/libgdx.png"));
-		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		
-		TextureRegion region = new TextureRegion(texture, 0, 0, 512, 275);
-		
-		sprite = new Sprite(region);
-		sprite.setSize(0.9f, 0.9f * sprite.getHeight() / sprite.getWidth());
-		sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
-		sprite.setPosition(-sprite.getWidth()/2, -sprite.getHeight()/2);
 		
 		int mazeWidth = 9;
 		int mazeHeight = 9;
@@ -72,18 +52,7 @@ public class MazeOtaur implements ApplicationListener {
 		
 		cellSize = Gdx.graphics.getHeight() / (float) mazeHeight;
 		
-		FileHandle mazeFile = Gdx.files.internal("openmaze.txt");
-		if  (mazeFile.exists()) {
-			maze.createMaze(mazeFile);
-		} else {
-			Gdx.app.error("MazeFile", "Maze file not found!");
-		}
-		Gdx.app.debug("\nMaze", maze.printMaze());
-		
-		// Set up maze textures
-		// TODO: Don't load files like this
-		passTex = new Texture(Gdx.files.internal("passable.png"));
-		wallTex = new Texture(Gdx.files.internal("wall.png"));
+		setupMaze();
 		
 		player = new Player(10, "Larry", new Vector2(0,0));
 		setUpPlayerTexture();
@@ -134,6 +103,23 @@ public class MazeOtaur implements ApplicationListener {
 		
 		batch.draw(playerTex, realPos.x, realPos.y);
 	}
+	
+	/**
+	 * Load the maze and setup the textures for the maze
+	 */
+	public void setupMaze() {
+		FileHandle mazeFile = Gdx.files.internal("openmaze.txt");
+		if  (mazeFile.exists()) {
+			maze.createMaze(mazeFile);
+		} else {
+			Gdx.app.error("MazeFile", "Maze file not found!");
+		}
+		Gdx.app.debug("\nMaze", maze.printMaze());
+		
+		// Set up maze textures
+		passTex = new Texture(Gdx.files.internal("passable.png"));
+		wallTex = new Texture(Gdx.files.internal("wall.png"));
+	}
 
 	public void setUpPlayerTexture() {
 		
@@ -160,7 +146,6 @@ public class MazeOtaur implements ApplicationListener {
 	@Override
 	public void dispose() {
 		batch.dispose();
-		texture.dispose();
 		passTex.dispose();
 		wallTex.dispose();
 		playerTex.dispose();
@@ -182,10 +167,18 @@ public class MazeOtaur implements ApplicationListener {
 			drawPlayer(batch);
 		batch.end();
 		//Gdx.app.log("FPS", ""+ Gdx.graphics.getFramesPerSecond());
+		
+		inputCheck();
+		playerMovement();
+	}
+
+	/**
+	 * Check for input and take actions based on input
+	 */
+	public void inputCheck() {
 
 		inputCon.poll();
-		deltaMult = Gdx.graphics.getDeltaTime();
-
+		
 		if (inputCon.isKeyPressed(Input.Keys.LEFT)) {
 			player.setChangeX(-1);
 		} else if (inputCon.isKeyPressed(Input.Keys.RIGHT)) {
@@ -195,16 +188,23 @@ public class MazeOtaur implements ApplicationListener {
 		} else if (inputCon.isKeyPressed(Input.Keys.UP)) {
 			player.setChangeY(-1);
 		}
+	}
+	
+	/**
+	 * Controls when the player moves and where the player can move to
+	 */
+	public void playerMovement() {
+		float deltaTime = Gdx.graphics.getDeltaTime();
 		
 		playerCell = maze.getCell(player.findNextPos());
 		if (playerCell != null && playerCell.isPassable()) {
-			player.move(deltaMult);
+			player.move(deltaTime);
 		} else {
 			player.resetMovement();
 		}
-		
 	}
-
+	
+	
 	@Override
 	public void resize(int width, int height) {
 	}
