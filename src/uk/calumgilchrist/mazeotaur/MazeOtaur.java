@@ -45,12 +45,12 @@ public class MazeOtaur implements ApplicationListener {
 		
 		batch = new SpriteBatch();
 		
-		int mazeWidth = 9;
-		int mazeHeight = 9;
+		cellSize = 32;
+		
+		int mazeWidth = (int) (Gdx.graphics.getWidth() / cellSize);
+		int mazeHeight = (int) (Gdx.graphics.getWidth() / cellSize);
 		//Load and draw maze
 		maze = new MazeGenerator(mazeWidth, mazeHeight);
-		
-		cellSize = Gdx.graphics.getHeight() / (float) mazeHeight;
 		
 		setupMaze();
 		
