@@ -21,7 +21,7 @@ public class MazeOtaur implements ApplicationListener {
 	
 	private SpriteBatch batch;
 	
-	private MazeTemplate maze;
+	private MazeGenerator maze;
 	
 	private float cellSize;
 	
@@ -48,7 +48,7 @@ public class MazeOtaur implements ApplicationListener {
 		int mazeWidth = 9;
 		int mazeHeight = 9;
 		//Load and draw maze
-		maze = new MazeTemplate(mazeWidth, mazeHeight);
+		maze = new MazeGenerator(mazeWidth, mazeHeight);
 		
 		cellSize = Gdx.graphics.getHeight() / (float) mazeHeight;
 		
@@ -63,7 +63,7 @@ public class MazeOtaur implements ApplicationListener {
 	 * Go through the given maze and display the passable cells
 	 * @param maze
 	 */
-	public void drawMaze(MazeTemplate maze, SpriteBatch batch) {
+	public void drawMaze(Maze maze, SpriteBatch batch) {
 		int width = maze.getWidth();
 		int height = maze.getHeight();
 			
@@ -110,7 +110,7 @@ public class MazeOtaur implements ApplicationListener {
 	public void setupMaze() {
 		FileHandle mazeFile = Gdx.files.internal("openmaze.txt");
 		if  (mazeFile.exists()) {
-			maze.createMaze(mazeFile);
+			maze.createMaze();
 		} else {
 			Gdx.app.error("MazeFile", "Maze file not found!");
 		}
