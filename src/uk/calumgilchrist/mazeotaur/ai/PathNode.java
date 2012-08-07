@@ -25,7 +25,6 @@ public class PathNode implements Comparable<PathNode> {
 	}
 	
 	/**
-	 * 
 	 * @param point Point on Map
 	 * @param cost Cost to Reach
 	 * @param parent Who lead you here
@@ -61,6 +60,11 @@ public class PathNode implements Comparable<PathNode> {
 		return parent;
 	}
 
+	/**
+	 * Print the Node as a string
+	 * Shows the point, cost and parent of the node
+	 * @return String representing nide
+	 */
 	@Override
 	public String toString() {
 		String output = "PathNode: [ ";
@@ -73,6 +77,11 @@ public class PathNode implements Comparable<PathNode> {
 		return output;
 	}
 	
+	/**
+	 * Compare the cost of two PathNodes
+	 * @param node The node to be compared
+	 * @ return -1, 0 or 1 dependent on <, == or >
+	 */
 	@Override
 	public int compareTo(PathNode node) {
 		if (this.getCost() < node.getCost()) {
