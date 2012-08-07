@@ -19,12 +19,13 @@ public class MazeGenerator extends Maze {
 	public void createMaze() {
 		Random rand = new Random();
 		LinkedList<Vector2> walls = new LinkedList<Vector2>();
-		
+		int maxConnections = 1;
 		
 		int middleX = getWidth() / 2;
 		int middleY = getHeight() / 2;
 		
 		Vector2 startCell = new Vector2(middleX, middleY);
+		getCell(startCell).setPassable(true);
 		addAdjacentWalls(walls, startCell);
 		
 		Cell tempCell = new Cell(false);
@@ -37,7 +38,7 @@ public class MazeGenerator extends Maze {
 			startCell = walls.remove(rand.nextInt(walls.size()));
 			
 			tempCell = getCell(startCell);
-			if (!tempCell.isPassable()) {
+			if (!tempCell.isPassable() && checkAdjacent(startCell) <= maxConnections) {
 				tempCell.setPassable(true);
 				
 				addAdjacentWalls(walls, startCell);
@@ -54,31 +55,65 @@ public class MazeGenerator extends Maze {
 	 */
 	public List<Vector2> addAdjacentWalls(List<Vector2> walls, Vector2 cell) {
 		
-		int xStart = (int) cell.x - 1;
-		int yStart = (int) cell.y - 1;
+		List<Vector2> points = getSurroundingPoints(cell);
 		
-		int cellCheck = 3;
-		int xEnd = xStart + cellCheck;
-		int yEnd = yStart + cellCheck;
-		
-		Vector2 tempCell = new Vector2();
-		for (int x = xStart; x < xEnd; x++) {
-			for (int y = yStart; y < yEnd; y++) {
-				
-				//Check cell isn't out of bounds
-				if (getCell(x, y) != null && !isDiagonal(x, y, cell.x, cell.y)) {
-					tempCell = new Vector2(x, y);
-					
-					// Don't re-add cells
-					if (!walls.contains(tempCell) && !tempCell.equals(cell)) {
-						walls.add(tempCell);
-					}
-				}
+		for (Vector2 point: points) {		
+			// Don't re-add cells
+			if (!walls.contains(point) && !point.equals(cell)) {
+				walls.add(point);
 			}
 		}
 		return walls;
 	}
 
+	/**
+	 * Retrieve a list of the points surrounding a given cell
+	 * 
+	 * TODO: Could return an Iterator
+	 * @param point Look around this cell
+	 * @return The cells connected to the given cell
+	 */
+	private List<Vector2> getSurroundingPoints(Vector2 point) {
+		LinkedList<Vector2> surroundingPoints = new LinkedList<Vector2>();
+		
+		int xStart = (int) point.x - 1;
+		int yStart = (int) point.y - 1;
+		
+		int cellCheck = 3;
+		int xEnd = xStart + cellCheck;
+		int yEnd = yStart + cellCheck;
+		
+		for (int x = xStart; x < xEnd; x++) {
+			for (int y = yStart; y < yEnd; y++) {
+				//Check cell isn't out of bounds
+				if (getCell(x, y) != null && !isDiagonal(x, y, point.x, point.y)) {
+					surroundingPoints.add(new Vector2(x, y));
+				}
+			}
+		}
+		
+		return surroundingPoints;
+	}
+	
+	/**
+	 * Check around a cell to see it's connectivity
+	 * @param pos
+	 * @return
+	 */
+	private int checkAdjacent(Vector2 pos) {
+		List<Vector2> points = getSurroundingPoints(pos);
+		
+		int connected = 0;
+		for (Vector2 point: points) {
+			if (getCell(point).isPassable()) {
+				connected++;
+			}
+		}
+		
+		Gdx.app.log("Connected", "" + connected);
+		return connected;
+	}
+	
 	/**
 	 * Check if the given points are diagonal to the other
 	 * @param x
