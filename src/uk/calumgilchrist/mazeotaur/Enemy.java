@@ -5,6 +5,13 @@ import java.util.List;
 
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * An enemy is a creature with malicious intent against the player.
+ * 
+ * Enemies follow a pre-set path given to them.
+ * @author homelinen
+ *
+ */
 public class Enemy extends Creature {
 
 	private List<Vector2> nodes;
@@ -12,6 +19,13 @@ public class Enemy extends Creature {
 	private int curNode;
 	private int patrolLength;
 	
+	/**
+	 * Create an enemy
+	 * @param health how much damage can be taken
+	 * @param name Unique name
+	 * @param position where the creature is
+	 * @param patrolLength how many squares to patrol
+	 */
 	public Enemy(int health, String name, Vector2 position, int patrolLength) {
 		super(health, name, position);
 		nodes = new LinkedList<Vector2>();

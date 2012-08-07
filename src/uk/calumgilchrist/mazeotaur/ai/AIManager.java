@@ -1,13 +1,10 @@
 package uk.calumgilchrist.mazeotaur.ai;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
-
-import org.w3c.dom.stylesheets.LinkStyle;
 
 import uk.calumgilchrist.mazeotaur.Enemy;
 import uk.calumgilchrist.mazeotaur.MazeGenerator;
@@ -15,10 +12,18 @@ import uk.calumgilchrist.mazeotaur.MazeGenerator;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * Controls the enemies movement and positioning in the map
+ * @author homelinen
+ *
+ */
 public class AIManager {
 
 	private List<Enemy> creatures;
 	
+	/**
+	 * Create a new manager with an empty creature list
+	 */
 	public AIManager() {
 		creatures = new LinkedList<Enemy>();
 	}
@@ -63,8 +68,6 @@ public class AIManager {
 		boolean inOpen = false;
 		boolean inClosed = false;
 		
-		Gdx.app.log("Open List", open.toString());
-		
 		while (!open.element().getPoint().equals(goal)) {
 			
 			curNode = open.remove();
@@ -78,23 +81,18 @@ public class AIManager {
 				tempNeighbour = neighbours.next();
 				
 				tempNode = getPointInNode(open, tempNeighbour); 
-				inOpen = tempNode != null;
+				inOpen = ( tempNode != null );
 				if (inOpen && (tempNode.getCost() > curcost)) {
 					open.remove(tempNode);
 				}
 				
-				tempNode = getPointInNode(closed, tempNeighbour);
-				inClosed = tempNode != null;
-//				if (inClosed && tempNode.getCost() < curcost) {
-//					closed.remove(tempNode);
-//				}
+				inClosed = getPointInNode(closed, tempNeighbour) != null;
 				
 				if (!inOpen && !inClosed) {
 					open.add(new PathNode(tempNeighbour, curcost, curNode));
 				}
 			}
 		}
-
 		
 		closed.add(open.element());
 		
@@ -106,7 +104,6 @@ public class AIManager {
 	
 	/**
 	 * Slow O(n) search to see if a point is present in a nodeList
-	 * 
 	 * Returns the cost, or -1 if not in list
 	 * @param nodeList List of PathNodes to search
 	 * @param point Point of comparison
@@ -119,8 +116,6 @@ public class AIManager {
 		while (nodes.hasNext()) {
 			tempNode = nodes.next();
 			if (tempNode.getPoint().equals(point)) {
-//				Gdx.app.log("Node", "" + tempNode);
-//				Gdx.app.log("Point", "" + point);
 				
 				return tempNode;
 			}
