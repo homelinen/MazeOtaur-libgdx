@@ -1,6 +1,5 @@
 package uk.calumgilchrist.mazeotaur;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
 public class Player extends Creature {
@@ -52,8 +51,6 @@ public class Player extends Creature {
 	
 	/**
 	 * Where the player should move next on the y-axis
-	 * TODO: Use an enum rather than an Int, or simply a static constant
-	 * 
 	 * @param y direction
 	 */
 	public void setChangeY(int y) {
@@ -62,6 +59,9 @@ public class Player extends Creature {
 	
 	/**
 	 * Take a number and reduce it to 1 or -1
+	 * Simply performs n * 1/n
+	 * Does not effect negative numbers.
+	 * 
 	 * @param input 
 	 * @return Reduced number
 	 */
@@ -84,7 +84,8 @@ public class Player extends Creature {
 	 */
 	public void move(float deltaMult) {
 		
-		if (timeFromLastMove > SPEED_CONST && (changex != 0 || changey != 0)) {
+		boolean hasChanged = changex != 0 || changey != 0;
+		if (hasChanged && timeFromLastMove > SPEED_CONST) {
 			setPosition(findNextPos());
 			
 			//Moved, reset timer
