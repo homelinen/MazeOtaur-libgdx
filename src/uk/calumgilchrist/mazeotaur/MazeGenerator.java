@@ -77,7 +77,7 @@ public class MazeGenerator extends Maze {
 	 * @param point Look around this cell
 	 * @return The cells connected to the given cell
 	 */
-	private Iterator<Vector2> getSurroundingPoints(Vector2 point) {
+	public Iterator<Vector2> getSurroundingPoints(Vector2 point) {
 		LinkedList<Vector2> surroundingPoints = new LinkedList<Vector2>();
 		
 		int xStart = (int) point.x - 1;
