@@ -36,8 +36,8 @@ public class AIManager {
 	 */
 	public void addCreature(Enemy enemy, Maze maze, Vector2 goal) {
 		
-		enemy.setPath(findPath(maze, enemy.getPosition(), goal));
 		creatures.add(enemy);
+		creatures.get(creatures.size() - 1).setPath(findPath(maze, enemy.getPosition(), goal));
 	}
 	
 	/**
@@ -182,5 +182,13 @@ public class AIManager {
 	 */
 	public int getCreatureCount() {
 		return creatures.size();
+	}
+
+	/**
+	 * Get creatures
+	 * @return All creatures in a list
+	 */
+	public List<Enemy> getCreatures() {
+		return creatures;
 	}
 }
