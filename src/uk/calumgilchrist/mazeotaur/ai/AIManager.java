@@ -101,11 +101,13 @@ public class AIManager {
 			}
 		}
 		
-		//Add the head element
-		closed.add(open.element());
+		if (!open.isEmpty()) {
+			//Add the head element
+			closed.add(open.element());
 		
-		//Free up some space, don't need anymore
-		open.clear();
+			//Free up some space, don't need anymore
+			open.clear();
+		}
 		
 		//TODO closed list could be cleared
 		return findRoute(closed.get(closed.size() - 1), start);
