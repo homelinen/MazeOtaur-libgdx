@@ -36,11 +36,14 @@ public class Enemy extends Creature {
 	}
 	
 	/**
-	 * Set the path for the creature
+	 * Set the path for the creature and start on the path
 	 * @param point - List of points in path
 	 */
 	public void setPath(List<Vector2> points) {
+		curNode = 0;
+		nodes = points;
 		
+		setPosition(nodes.get(0));
 	}
 	
 	/**
@@ -48,8 +51,8 @@ public class Enemy extends Creature {
 	 */
 	public void moveNode() {
 		if (patrol) {
-			setPosition(nodes.get(curNode));
 			curNode++;
+			setPosition(nodes.get(curNode));
 			
 			if (curNode >= patrolLength) {
 				curNode = 0;
