@@ -62,11 +62,11 @@ public class MazeOtaur implements ApplicationListener {
 		setupMaze();
 		
 		player = new Player(10, "Larry", new Vector2(0,0));
-		setUpPlayerTexture();
+		playerTex = getCircleTexture(Color.GREEN);
 		
 		aiman = new AIManager();
 		setUpAI();
-		setUpEnemyTexture();
+		enemyTex = getCircleTexture(Color.RED);
 	}
 	
 	/**
@@ -162,36 +162,23 @@ public class MazeOtaur implements ApplicationListener {
 	}
 
 	/**
-	 * Create a circle to represent the player
+	 * Create a coloured circle texture
+	 * @param color Color of the circle
+	 * @return new Texture with a circle
 	 */
-	public void setUpPlayerTexture() {
-		
+	public Texture getCircleTexture(Color color) {
 		//Should be size of cell
 		int circleDiameter = (int) cellSize;
 		int circRadius = circleDiameter / 2;
 		Pixmap circle = new Pixmap(circleDiameter, circleDiameter, Format.RGBA8888);
 		
-		circle.setColor(Color.GREEN);
+		circle.setColor(color);
 		circle.fillCircle(circRadius, circRadius, circRadius);
 		
-		playerTex = new Texture(circle);
+		Texture blankTex = new Texture(circle);
 		circle.dispose();
-	}
-	/**
-	 * Create a red circle to represent an enemy
-	 */
-	public void setUpEnemyTexture() {
 		
-		//Should be size of cell
-		int circleDiameter = (int) cellSize;
-		int circRadius = circleDiameter / 2;
-		Pixmap circle = new Pixmap(circleDiameter, circleDiameter, Format.RGBA8888);
-		
-		circle.setColor(Color.RED);
-		circle.fillCircle(circRadius, circRadius, circRadius);
-		
-		enemyTex = new Texture(circle);
-		circle.dispose();
+		return blankTex;
 	}
 	
 	/**
