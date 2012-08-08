@@ -100,6 +100,34 @@ public class Maze {
 		return surroundingPoints.iterator();
 	}
 	
+	/**
+	 * Find the closest valid grid vell
+	 * @param closeTo
+	 */
+	public Vector2 findPassableCell(Vector2 closeTo) {
+		LinkedList<Vector2> neighbourList = new LinkedList<Vector2>();
+		
+		neighbourList.add(closeTo);
+		Vector2 neighbour;
+		Iterator<Vector2> neighbours;
+		
+		while (!neighbourList.isEmpty()) {
+			neighbour = neighbourList.remove();
+			
+			if (getCell(neighbour).isPassable()) {
+				return neighbour;
+			} else {
+				//Find neighbours and add to the end of the neighbourList
+				neighbours = getSurroundingPoints(closeTo);
+				while (neighbours.hasNext()) {
+					neighbourList.add(neighbours.next());
+				}
+			}
+		}
+		
+		//Entire Maze is impassible
+		return null;
+	}
 	
 	/**
 	 * Check if the given points are diagonal to the other
