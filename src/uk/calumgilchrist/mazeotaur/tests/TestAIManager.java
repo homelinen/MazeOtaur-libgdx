@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -74,6 +75,7 @@ public class TestAIManager {
 			assertTrue("Path is not 0", path.size() > 0);
 			assertTrue("First node is start", areEqualVectors(start[i], path.getFirst()));
 			assertTrue("Last node is goal", areEqualVectors(goal[i], path.getLast()));
+			assertTrue("Valid Path", isPath(path));
 		}
 	}
 
@@ -83,5 +85,55 @@ public class TestAIManager {
 		} else {
 			return false;
 		}
+	}
+		
+	/**
+	 * Check that each point is adjacent to the next
+	 * Ensures a path has no gaps
+	 * @param path List of nodes to check
+	 * @return Whether or not the path is valid
+	 */
+	public boolean isPath(List<Vector2> path) {
+		
+		Iterator<Vector2> nodes = path.iterator();
+		Vector2 prevPoint = nodes.next();
+		Vector2 curPoint;
+		while (nodes.hasNext()) {
+			curPoint = nodes.next();
+			if (!isAdjacent(prevPoint, curPoint)) {
+				return false;
+			}
+			
+			prevPoint = curPoint;
+		}
+		return true;
+	}
+	
+	/**
+	 * Check if the Vectors are next to each other
+	 * @param first 
+	 * @param second
+	 * @return
+	 */
+	public boolean isAdjacent(Vector2 first, Vector2 second) {
+		float ax = first.x;
+		float ay = first.y;
+		
+		float bx = second.x;
+		float by = second.y;
+		
+		int minBelow = -1;
+		int maxAbove = 2;
+		
+		//Check around the points
+		for (int chx = minBelow; chx < maxAbove; chx++) {
+			for (int chy = minBelow; chy < maxAbove; chy++) {
+				if ((ax + chx) == bx && ((ay + chy) == by)) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
 	}
 }
