@@ -49,7 +49,7 @@ public class AIManager {
 	 * Find a path to the point
 	 * @param The maze to do operations on
 	 * @param start beginning point
-	 * @param goal Final point to reacg
+	 * @param goal Final point to reach
 	 * @return List of points to follow
 	 */
 	public List<Vector2> findPath(Maze maze, Vector2 start, Vector2 goal) {
@@ -68,7 +68,7 @@ public class AIManager {
 		boolean inOpen = false;
 		boolean inClosed = false;
 		
-		while (!open.element().getPoint().equals(goal)) {
+		while (!open.isEmpty() && !open.element().getPoint().equals(goal)) {
 			
 			curNode = open.remove();
 			closed.add(curNode);
@@ -80,26 +80,35 @@ public class AIManager {
 				
 				tempNeighbour = neighbours.next();
 				
-				tempNode = getPointInNode(open, tempNeighbour); 
-				inOpen = ( tempNode != null );
-				if (inOpen && (tempNode.getCost() > curcost)) {
-					open.remove(tempNode);
-				}
-				
-				inClosed = getPointInNode(closed, tempNeighbour) != null;
-				
-				if (!inOpen && !inClosed) {
-					open.add(new PathNode(tempNeighbour, curcost, curNode));
+				if (maze.getCell(tempNeighbour).isPassable()) {
+					tempNode = getPointInNode(open, tempNeighbour); 
+					inOpen = ( tempNode != null );
+					if (inOpen && (tempNode.getCost() > curcost)) {
+						open.remove(tempNode);
+					}
+					
+					tempNode = getPointInNode(closed, tempNeighbour);
+					inClosed = tempNode != null;
+					
+					if (inClosed && tempNode.getCost() > curcost) {
+						closed.remove(tempNode);
+					}
+					
+					if (!inOpen && !inClosed) {
+						open.add(new PathNode(tempNeighbour, curcost, curNode));
+					}
 				}
 			}
 		}
 		
+		//Add the head element
 		closed.add(open.element());
 		
 		//Free up some space, don't need anymore
 		open.clear();
 		
-		return findRoute(closed, start);
+		//TODO closed list could be cleared
+		return findRoute(closed.get(closed.size() - 1), start);
 	}
 	
 	/**
@@ -126,18 +135,17 @@ public class AIManager {
 	
 	/**
 	 * Find the route by following the parents of the nodes in the List
-	 * @param nodeList List of nodes
-	 * @param start Where you bagan
+	 * @param The final node, with parents
+	 * @param start Where you began
 	 * @return A shortened list of the path needed to be taken
 	 */
-	public List<Vector2> findRoute(List<PathNode> nodeList, Vector2 start) {
+	public List<Vector2> findRoute(PathNode goal, Vector2 start) {
 		LinkedList<Vector2> route = new LinkedList<Vector2>();
 		
-		PathNode goal = nodeList.get(nodeList.size() - 1);
-		route.add(goal.getPoint());
+		route.addFirst(goal.getPoint());
 		
 		PathNode tempNode = goal.getParent();
-		route.add(tempNode.getPoint());
+		route.addFirst(tempNode.getPoint());
 		
 		while (!tempNode.getPoint().equals(start) && tempNode != null) {
 			tempNode = tempNode.getParent();
