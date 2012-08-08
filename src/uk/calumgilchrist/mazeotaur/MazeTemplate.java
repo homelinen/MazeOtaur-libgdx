@@ -2,9 +2,11 @@ package uk.calumgilchrist.mazeotaur;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.math.Vector2;
 
 /**
  * Holds a template of a maze from a file
@@ -40,7 +42,7 @@ public class MazeTemplate extends Maze {
 					
 			do {
 				if (read == '1') {
-					getCell(y, x).setPassable(true);
+					getCell(x, y).setPassable(true);
 				} else if (read == '\n') {
 					// At end of line, move to new row
 					y++;
@@ -54,6 +56,24 @@ public class MazeTemplate extends Maze {
 			
 		} catch (IOException e) {
 			Gdx.app.log("ReadMaze", "IO Exception in MazeFile");
+		}
+	}
+	
+	/**
+	 * Generate a maze from a list of passable co-ords
+	 * @param points
+	 */
+	public void createMaze(List<Vector2> points) {
+		
+		Vector2 tempVec = new Vector2();
+		
+		for (int x = 0; x < getWidth(); x++) {
+			for (int y = 0; y < getHeight(); y++) {
+				tempVec = new Vector2(x, y);
+				if (points.contains(tempVec)) {
+					getCell(tempVec).setPassable(true);
+				}
+			}
 		}
 	}
 }
