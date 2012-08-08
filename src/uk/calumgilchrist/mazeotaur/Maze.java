@@ -55,8 +55,9 @@ public class Maze {
 	public String printMaze() {
 		String output = "";
 		
-		for (int x=0; x < width; x++) {
-			for (int y=0; y < height; y++) {
+		
+		for (int y=0; y < height; y++) {
+			for (int x=0; x < width; x++) {
 				if (maze[x][y].isPassable()) {
 					output += "1";
 				} else {
