@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 import uk.calumgilchrist.mazeotaur.Enemy;
-import uk.calumgilchrist.mazeotaur.MazeGenerator;
+import uk.calumgilchrist.mazeotaur.Maze;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
@@ -52,7 +52,7 @@ public class AIManager {
 	 * @param goal Final point to reacg
 	 * @return List of points to follow
 	 */
-	public List<Vector2> findPath(MazeGenerator maze, Vector2 start, Vector2 goal) {
+	public List<Vector2> findPath(Maze maze, Vector2 start, Vector2 goal) {
 		
 		PriorityQueue<PathNode> open = new PriorityQueue<PathNode>();
 		LinkedList<PathNode> closed = new LinkedList<PathNode>();
