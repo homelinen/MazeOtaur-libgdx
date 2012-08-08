@@ -18,6 +18,7 @@ import com.badlogic.gdx.math.Vector2;
 import uk.calumgilchrist.mazeotaur.Maze;
 import uk.calumgilchrist.mazeotaur.MazeGenerator;
 import uk.calumgilchrist.mazeotaur.MazeTemplate;
+import uk.calumgilchrist.mazeotaur.Minotaur;
 import uk.calumgilchrist.mazeotaur.ai.AIManager;
 
 public class TestAIManager {
@@ -48,6 +49,7 @@ public class TestAIManager {
 		}
 		
 		aiman = new AIManager();
+		assertEquals("No creatures have been added", 0, aiman.getCreatureCount());
 	}
 	
 	/**
@@ -79,6 +81,29 @@ public class TestAIManager {
 		}
 	}
 
+	/**
+	 * Add a creature to the manager and update it
+	 */
+	@Test
+	public void testAddCreature() {
+
+		int health = 10;
+		Vector2 startPos = new Vector2(0,0);
+		int patrolLength = 5;
+		Vector2 endGoal = new Vector2(0, 9);
+		
+		Minotaur min = new Minotaur(health, "Fred", startPos, patrolLength);
+		aiman.addCreature(min, mazes[0], endGoal);
+		
+		assertEquals("One creatures has been added", 1, aiman.getCreatureCount());
+	}
+		
+	/**
+	 * Determine whether two vectors represent the same co-ords
+	 * @param a Vector 1
+	 * @param b Vector 2
+	 * @return true if the vectors are the same
+	 */
 	public boolean areEqualVectors(Vector2 a, Vector2 b) {
 		if (a.x == b.x && a.y == b.y){
 			return true;
