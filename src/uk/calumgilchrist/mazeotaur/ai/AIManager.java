@@ -29,10 +29,14 @@ public class AIManager {
 	}
 	
 	/**
-	 * Add a creature to the management list
-	 * @param enemy
+	 * Add a creature to the management list and set it's path
+	 * @param enemy The creature to add
+	 * @param maze The maze to patrol
+	 * @param goal Where the patrol should end
 	 */
-	public void addCreature(Enemy enemy) {
+	public void addCreature(Enemy enemy, Maze maze, Vector2 goal) {
+		
+		enemy.setPath(findPath(maze, enemy.getPosition(), goal));
 		creatures.add(enemy);
 	}
 	
@@ -170,5 +174,13 @@ public class AIManager {
 		cost = (int) (Math.abs(sum.x) + Math.abs(sum.y));
 		
 		return cost;
+	}
+
+	/**
+	 * Return the number of managed creatures
+	 * @return
+	 */
+	public int getCreatureCount() {
+		return creatures.size();
 	}
 }
