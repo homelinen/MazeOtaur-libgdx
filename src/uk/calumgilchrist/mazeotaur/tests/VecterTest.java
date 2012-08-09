@@ -40,7 +40,7 @@ public class VecterTest {
 		assertTrue("X is unchanged", x1 == vec[1].x);
 		assertTrue("Y is unchanged", y1 == vec[1].y);
 		
-		assertTrue("Vecter copied correctly", vec[1].equals(vec[2]));
+		//assertSame("Vecter copied correctly", vec[1], vec[2]);
 	}
 
 	@Test
@@ -58,7 +58,7 @@ public class VecterTest {
 		test[5] = new Vecter(x, y - 1);
 		test[6] = new Vecter(x + 1, y + 1);
 		
-		assertTrue("Vector's are the same", test[0].equals(test[1]));
+		assertEquals("Vector's are the same", test[0], test[1]);
 		for (int i = 2; i < test.length; i++) {
 			assertFalse("Vector "+ i + "is not same", test[0].equals(test[i]));
 		}
@@ -67,7 +67,7 @@ public class VecterTest {
 	@Test
 	public void testCpy() {
 		Vecter vecCopy = vec[0].cpy();
-		assertTrue("Vecter copied correctly", vec[0].equals(vecCopy));
+		assertEquals("Vecter copied correctly", vec[0], vecCopy);
 	}
 
 	@Test
@@ -76,6 +76,6 @@ public class VecterTest {
 		
 		assertFalse("Not the same", newVec.equals(vec[0]));
 		vec[0].set(newVec);
-		assertTrue("Set correctly", newVec.equals(vec[0]));
+		assertEquals("Set correctly", newVec, vec[0]);
 	}
 }

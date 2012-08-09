@@ -27,7 +27,19 @@ public class Vecter extends Vector2 {
 	 * @param v Vector to compare with
 	 * @return Whether or not the objects are equal
 	 */
-	public boolean equals(Vecter v) {
+	@Override
+	public boolean equals(Object o) {
+		
+		if (this == o) {
+			return true;
+		}
+		
+		if (!(o instanceof Vector2)) {
+			System.out.println("Fail");
+			return false;
+		}
+		
+		Vector2 v = (Vector2) o;
 		return this.x == v.x && this.y == v.y;
 	}
 
@@ -54,31 +66,10 @@ public class Vecter extends Vector2 {
 		this.y -= v.y;
 		return this;
 	}
-	
-//	@Override
-//	public Vecter sub(float x, float y) {
-//		this.x -= x;
-//		this.y -= y;
-//		return this;
-//	}
 
 	public Vecter add(Vecter v) {
 		this.x += v.x;
 		this.y += v.y;
 		return this;
 	}
-
-//	@Override
-//	public Vecter add(float x, float y) {
-//		this.x += x;
-//		this.y += y;
-//		return this;
-//	}
-//
-//	@Override
-//	public Vecter mul(float scalar) {
-//		this.x = this.x * scalar;
-//		this.y = this.y * scalar;
-//		return this;
-//	}
 }
