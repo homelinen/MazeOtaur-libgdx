@@ -1,7 +1,5 @@
 package uk.calumgilchrist.mazeotaur;
 
-import com.badlogic.gdx.math.Vector2;
-
 public class Player extends Creature {
 
 	public static final float SPEED_CONST = 0.12f;
@@ -16,7 +14,7 @@ public class Player extends Creature {
 	 * @param name Player name
 	 * @param position Position on the board
 	 */
-	public Player(int health, String name, Vector2 position) {
+	public Player(int health, String name, Vecter position) {
 		super(health, name, position, SPEED_CONST);
 		
 		changex = 0;
@@ -94,9 +92,9 @@ public class Player extends Creature {
 	 * 
 	 * @return The next point the player will be going to
 	 */
-	public Vector2 findNextPos() {
-		Vector2 curPos = getPosition().cpy();
-		Vector2 changePos = new Vector2(changex, changey);
+	public Vecter findNextPos() {
+		Vecter curPos = getPosition().cpy();
+		Vecter changePos = new Vecter(changex, changey);
 		
 		return curPos.add(changePos);
 	}

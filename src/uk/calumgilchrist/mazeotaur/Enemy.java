@@ -3,8 +3,6 @@ package uk.calumgilchrist.mazeotaur;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.badlogic.gdx.math.Vector2;
-
 /**
  * An enemy is a creature with malicious intent against the player.
  * 
@@ -14,7 +12,7 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class Enemy extends Creature {
 
-	private List<Vector2> nodes;
+	private List<Vecter> nodes;
 	private boolean patrol;
 	private int curNode;
 	private boolean reverse;
@@ -26,9 +24,9 @@ public class Enemy extends Creature {
 	 * @param position where the creature is
 	 * @param patrolLength how many squares to patrol
 	 */
-	public Enemy(int health, String name, Vector2 position, float speed) {
+	public Enemy(int health, String name, Vecter position, float speed) {
 		super(health, name, position, speed);
-		nodes = new LinkedList<Vector2>();
+		nodes = new LinkedList<Vecter>();
 		
 		patrol = true;
 		curNode = 0;
@@ -39,7 +37,7 @@ public class Enemy extends Creature {
 	 * Set the path for the creature and start on the path
 	 * @param point - List of points in path
 	 */
-	public void setPath(List<Vector2> points) {
+	public void setPath(List<Vecter> points) {
 		curNode = 0;
 		nodes = points;
 		
@@ -75,7 +73,7 @@ public class Enemy extends Creature {
 		}
 	}
 	
-	public List<Vector2> getPath() {
+	public List<Vecter> getPath() {
 		return nodes;
 	}
 }

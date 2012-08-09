@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Vector2;
 
 public class Maze {
 
@@ -78,8 +77,8 @@ public class Maze {
 	 * @param point Look around this cell
 	 * @return The cells connected to the given cell
 	 */
-	public Iterator<Vector2> getSurroundingPoints(Vector2 point) {
-		LinkedList<Vector2> surroundingPoints = new LinkedList<Vector2>();
+	public Iterator<Vecter> getSurroundingPoints(Vecter point) {
+		LinkedList<Vecter> surroundingPoints = new LinkedList<Vecter>();
 		
 		int xStart = (int) point.x - 1;
 		int yStart = (int) point.y - 1;
@@ -92,7 +91,7 @@ public class Maze {
 			for (int y = yStart; y < yEnd; y++) {
 				//Check cell isn't out of bounds
 				if (getCell(x, y) != null && !isDiagonal(x, y, point.x, point.y)) {
-					surroundingPoints.add(new Vector2(x, y));
+					surroundingPoints.add(new Vecter(x, y));
 				}
 			}
 		}
@@ -104,12 +103,12 @@ public class Maze {
 	 * Find the closest valid grid vell
 	 * @param closeTo
 	 */
-	public Vector2 findPassableCell(Vector2 closeTo) {
-		LinkedList<Vector2> neighbourList = new LinkedList<Vector2>();
+	public Vecter findPassableCell(Vecter closeTo) {
+		LinkedList<Vecter> neighbourList = new LinkedList<Vecter>();
 		
 		neighbourList.add(closeTo);
-		Vector2 neighbour;
-		Iterator<Vector2> neighbours;
+		Vecter neighbour;
+		Iterator<Vecter> neighbours;
 		
 		while (!neighbourList.isEmpty()) {
 			neighbour = neighbourList.remove();
@@ -166,7 +165,7 @@ public class Maze {
 	 * @param pos The position to check
 	 * @return The cell at pos
 	 */
-	public Cell getCell(Vector2 pos) {
+	public Cell getCell(Vecter pos) {
 		return getCell((int) pos.x, (int) pos.y);
 	}
 

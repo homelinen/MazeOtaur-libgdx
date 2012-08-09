@@ -7,25 +7,24 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.badlogic.gdx.math.Vector2;
-
 import uk.calumgilchrist.mazeotaur.Enemy;
+import uk.calumgilchrist.mazeotaur.Vecter;
 
 public class EnemyTest {
 	private Enemy enemy;
-	private LinkedList<Vector2> points;
+	private LinkedList<Vecter> points;
 	
 	/**
 	 * Ensure an enemy class has been initialised for every test
 	 */
 	@Before
 	public void setUp() {
-		enemy = new Enemy(10, "Hector", new Vector2(0,0), 5);
+		enemy = new Enemy(10, "Hector", new Vecter(0,0), 5);
 		assertEquals("Path is 0", 0, enemy.getPath().size());
 		
-		points = new LinkedList<Vector2>();
-		points.add(new Vector2(0,0));
-		points.add(new Vector2(0, 1));
+		points = new LinkedList<Vecter>();
+		points.add(new Vecter(0,0));
+		points.add(new Vecter(0, 1));
 		
 		assertEquals("Two elements were added", 2, points.size());
 	}
@@ -41,9 +40,9 @@ public class EnemyTest {
 		enemy.setPath(points);
 		enemy.setTimeFromLastMove(100);
 		
-		assertTrue("Enemy is at start", areEqualVectors(new Vector2(0, 0), enemy.getPosition()));
+		assertTrue("Enemy is at start", areEqualVectors(new Vecter(0, 0), enemy.getPosition()));
 		enemy.moveNode(0.5f);
-		assertFalse("Enemy is not at start", areEqualVectors(new Vector2(0, 0), enemy.getPosition()));
+		assertFalse("Enemy is not at start", areEqualVectors(new Vecter(0, 0), enemy.getPosition()));
 	}
 
 	/**
@@ -53,7 +52,7 @@ public class EnemyTest {
 	 * @param b Vector 2
 	 * @return true if the vectors are the same
 	 */
-	public boolean areEqualVectors(Vector2 a, Vector2 b) {
+	public boolean areEqualVectors(Vecter a, Vecter b) {
 		if (a.x == b.x && a.y == b.y){
 			return true;
 		} else {

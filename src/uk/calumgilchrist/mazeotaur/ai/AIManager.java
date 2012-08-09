@@ -8,9 +8,9 @@ import java.util.PriorityQueue;
 
 import uk.calumgilchrist.mazeotaur.Enemy;
 import uk.calumgilchrist.mazeotaur.Maze;
+import uk.calumgilchrist.mazeotaur.Vecter;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Vector2;
 
 /**
  * Controls the enemies movement and positioning in the map
@@ -34,7 +34,7 @@ public class AIManager {
 	 * @param maze The maze to patrol
 	 * @param goal Where the patrol should end
 	 */
-	public void addCreature(Enemy enemy, Maze maze, Vector2 goal) {
+	public void addCreature(Enemy enemy, Maze maze, Vecter goal) {
 		
 		creatures.add(enemy);
 		creatures.get(creatures.size() - 1).setPath(findPath(maze, enemy.getPosition(), goal));
@@ -57,7 +57,7 @@ public class AIManager {
 	 * @param goal Final point to reach
 	 * @return List of points to follow
 	 */
-	public List<Vector2> findPath(Maze maze, Vector2 start, Vector2 goal) {
+	public List<Vecter> findPath(Maze maze, Vecter start, Vecter goal) {
 		
 		PriorityQueue<PathNode> open = new PriorityQueue<PathNode>();
 		LinkedList<PathNode> closed = new LinkedList<PathNode>();
@@ -65,8 +65,8 @@ public class AIManager {
 		open.add(new PathNode(start, getPathCost(start, goal)));
 		
 		PathNode curNode;
-		Iterator<Vector2> neighbours;
-		Vector2 tempNeighbour = new Vector2();
+		Iterator<Vecter> neighbours;
+		Vecter tempNeighbour = new Vecter();
 		
 		int curcost = 0;
 		PathNode tempNode = new PathNode();
@@ -125,7 +125,7 @@ public class AIManager {
 	 * @param point Point of comparison
 	 * @return The cost of the point in the list
 	 */
-	public PathNode getPointInNode(Collection<PathNode> nodeList, Vector2 point) {
+	public PathNode getPointInNode(Collection<PathNode> nodeList, Vecter point) {
 		Iterator<PathNode> nodes = nodeList.iterator();
 		
 		PathNode tempNode;
@@ -146,8 +146,8 @@ public class AIManager {
 	 * @param start Where you began
 	 * @return A shortened list of the path needed to be taken
 	 */
-	public List<Vector2> findRoute(PathNode goal, Vector2 start) {
-		LinkedList<Vector2> route = new LinkedList<Vector2>();
+	public List<Vecter> findRoute(PathNode goal, Vecter start) {
+		LinkedList<Vecter> route = new LinkedList<Vecter>();
 		
 		route.addFirst(goal.getPoint());
 		
@@ -168,8 +168,8 @@ public class AIManager {
 	 * @param end Goal Point
 	 * @return The sum of the distance to the point
 	 */
-	public int getPathCost(Vector2 start, Vector2 end) {
-		Vector2 sum = start.cpy().sub(end);
+	public int getPathCost(Vecter start, Vecter end) {
+		Vecter sum = start.cpy().sub(end);
 		int cost = 0;
 		
 		cost = (int) (Math.abs(sum.x) + Math.abs(sum.y));

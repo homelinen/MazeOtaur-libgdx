@@ -5,22 +5,21 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.badlogic.gdx.math.Vector2;
-
 import uk.calumgilchrist.mazeotaur.Player;
+import uk.calumgilchrist.mazeotaur.Vecter;
 
 public class TestPlayer {
 
 	private Player player;
 	
-	private Vector2 startPos;
+	private Vecter startPos;
 	private String name;
 	private int health;
 	
 	@Before
 	public void setUp() {
 		health = 10;
-		startPos = new Vector2(0,0);
+		startPos = new Vecter(0,0);
 		name = "Player1";
 		
 		player = new Player(health, name, startPos);

@@ -13,12 +13,12 @@ import org.junit.Test;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.math.Vector2;
 
 import uk.calumgilchrist.mazeotaur.Maze;
 import uk.calumgilchrist.mazeotaur.MazeGenerator;
 import uk.calumgilchrist.mazeotaur.MazeTemplate;
 import uk.calumgilchrist.mazeotaur.Minotaur;
+import uk.calumgilchrist.mazeotaur.Vecter;
 import uk.calumgilchrist.mazeotaur.ai.AIManager;
 
 public class TestAIManager {
@@ -59,20 +59,20 @@ public class TestAIManager {
 	@Test
 	public void testFindPath() {
 		
-		Vector2[] start = new Vector2[numberOfTests];
-		Vector2[] goal = new Vector2[numberOfTests];
+		Vecter[] start = new Vecter[numberOfTests];
+		Vecter[] goal = new Vecter[numberOfTests];
 		
-		start[0] = new Vector2(0, 9);
-		goal[0] = new Vector2(9,0);
+		start[0] = new Vecter(0, 9);
+		goal[0] = new Vecter(9,0);
 		
-		start[1] = new Vector2(0, 0);
-		goal[1] = new Vector2(8,9);
+		start[1] = new Vecter(0, 0);
+		goal[1] = new Vecter(8,9);
 		
-		start[2] = new Vector2(0, 0);
-		goal[2] = new Vector2(4,4);
+		start[2] = new Vecter(0, 0);
+		goal[2] = new Vecter(4,4);
 		
 		for (int i = 0; i < numberOfTests; i++) {
-			LinkedList<Vector2> path = (LinkedList<Vector2>) aiman.findPath(mazes[i], start[i], goal[i]);
+			LinkedList<Vecter> path = (LinkedList<Vecter>) aiman.findPath(mazes[i], start[i], goal[i]);
 			
 			assertTrue("Path is not 0", path.size() > 0);
 			assertTrue("First node is start", areEqualVectors(start[i], path.getFirst()));
@@ -88,9 +88,9 @@ public class TestAIManager {
 	public void testAddCreature() {
 
 		int health = 10;
-		Vector2 startPos = new Vector2(0,0);
+		Vecter startPos = new Vecter(0,0);
 		int patrolLength = 5;
-		Vector2 endGoal = new Vector2(0, 9);
+		Vecter endGoal = new Vecter(0, 9);
 		
 		Minotaur min = new Minotaur(health, "Fred", startPos, patrolLength);
 		aiman.addCreature(min, mazes[0], endGoal);
@@ -104,7 +104,7 @@ public class TestAIManager {
 	 * @param b Vector 2
 	 * @return true if the vectors are the same
 	 */
-	public boolean areEqualVectors(Vector2 a, Vector2 b) {
+	public boolean areEqualVectors(Vecter a, Vecter b) {
 		if (a.x == b.x && a.y == b.y){
 			return true;
 		} else {
@@ -118,11 +118,11 @@ public class TestAIManager {
 	 * @param path List of nodes to check
 	 * @return Whether or not the path is valid
 	 */
-	public boolean isPath(List<Vector2> path) {
+	public boolean isPath(List<Vecter> path) {
 		
-		Iterator<Vector2> nodes = path.iterator();
-		Vector2 prevPoint = nodes.next();
-		Vector2 curPoint;
+		Iterator<Vecter> nodes = path.iterator();
+		Vecter prevPoint = nodes.next();
+		Vecter curPoint;
 		while (nodes.hasNext()) {
 			curPoint = nodes.next();
 			if (!isAdjacent(prevPoint, curPoint)) {
@@ -140,7 +140,7 @@ public class TestAIManager {
 	 * @param second
 	 * @return
 	 */
-	public boolean isAdjacent(Vector2 first, Vector2 second) {
+	public boolean isAdjacent(Vecter first, Vecter second) {
 		float ax = first.x;
 		float ay = first.y;
 		

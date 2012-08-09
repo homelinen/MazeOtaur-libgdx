@@ -5,9 +5,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.badlogic.gdx.math.Vector2;
-
 import uk.calumgilchrist.mazeotaur.MazeTemplate;
+import uk.calumgilchrist.mazeotaur.Vecter;
 
 public class TestMaze {
 
@@ -30,15 +29,15 @@ public class TestMaze {
 	}
 
 	@Test
-	public void testGetCellVector2() {
+	public void testGetCellVecter() {
 		int mazeXLim = width - 1;
 		int mazeYLim = height - 1;
 		
 		//Border
-		Vector2 cellTopLeft= new Vector2(0,0);
-		Vector2 cellBottomRight = new Vector2(mazeXLim,mazeYLim);
-		Vector2 cellTopRight = new Vector2(mazeXLim, 0);
-		Vector2 cellBottomLeft = new Vector2(0, mazeYLim);
+		Vecter cellTopLeft= new Vecter(0,0);
+		Vecter cellBottomRight = new Vecter(mazeXLim,mazeYLim);
+		Vecter cellTopRight = new Vecter(mazeXLim, 0);
+		Vecter cellBottomLeft = new Vecter(0, mazeYLim);
 		
 		assertNotNull(maze.getCell(cellTopLeft));
 		assertNotNull(maze.getCell(cellBottomRight));
@@ -46,10 +45,10 @@ public class TestMaze {
 		assertNotNull(maze.getCell(cellBottomLeft));
 		
 		//X out of bounds
-		cellTopLeft = new Vector2(-1, 0);
-		cellBottomRight = new Vector2(width, mazeYLim);
-		cellTopRight = new Vector2(width, 0);
-		cellBottomLeft = new Vector2(-1, mazeYLim);
+		cellTopLeft = new Vecter(-1, 0);
+		cellBottomRight = new Vecter(width, mazeYLim);
+		cellTopRight = new Vecter(width, 0);
+		cellBottomLeft = new Vecter(-1, mazeYLim);
 		
 		assertNull(maze.getCell(cellTopLeft));
 		assertNull(maze.getCell(cellBottomRight));
@@ -57,10 +56,10 @@ public class TestMaze {
 		assertNull(maze.getCell(cellBottomLeft));
 		
 		//Y out of bounds
-		cellTopLeft = new Vector2(0, -1);
-		cellBottomRight = new Vector2(mazeXLim, height);
-		cellTopRight = new Vector2(mazeXLim, -1);
-		cellBottomLeft = new Vector2(0, height);
+		cellTopLeft = new Vecter(0, -1);
+		cellBottomRight = new Vecter(mazeXLim, height);
+		cellTopRight = new Vecter(mazeXLim, -1);
+		cellBottomLeft = new Vecter(0, height);
 		
 		assertNull(maze.getCell(cellTopLeft));
 		assertNull(maze.getCell(cellBottomRight));

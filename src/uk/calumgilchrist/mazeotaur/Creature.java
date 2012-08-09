@@ -1,12 +1,10 @@
 package uk.calumgilchrist.mazeotaur;
 
-import com.badlogic.gdx.math.Vector2;
-
 public class Creature {
 	
 	private int health;
 	private String name;
-	private Vector2 position;
+	private Vecter position;
 	
 	private float timeFromLastMove;
 	private float speed;
@@ -17,7 +15,7 @@ public class Creature {
 	 * @param name Unique Identifier for Creature
 	 * @param position Where in space it is
 	 */
-	protected Creature(int health, String name, Vector2 position, float speed) {
+	protected Creature(int health, String name, Vecter position, float speed) {
 		super();
 		this.health = health;
 		this.name = name;
@@ -53,11 +51,11 @@ public class Creature {
 		return name;
 	}
 	
-	public Vector2 getPosition() {
+	public Vecter getPosition() {
 		return position;
 	}
 
-	public void setPosition(Vector2 position) {
+	public void setPosition(Vecter position) {
 		this.position = position;
 	}
 }
