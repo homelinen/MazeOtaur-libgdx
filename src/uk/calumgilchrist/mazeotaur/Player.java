@@ -6,8 +6,6 @@ public class Player extends Creature {
 
 	public static final float SPEED_CONST = 0.12f;
 	
-	private float timeFromLastMove;
-
 	private int changex;
 	private int changey;
 	
@@ -19,11 +17,10 @@ public class Player extends Creature {
 	 * @param position Position on the board
 	 */
 	public Player(int health, String name, Vector2 position) {
-		super(health, name, position);
+		super(health, name, position, SPEED_CONST);
 		
 		changex = 0;
 		changey = 0;
-		timeFromLastMove = 0;
 	}
 	
 	/**
@@ -82,16 +79,11 @@ public class Player extends Creature {
 	 * @param deltaMult
 	 * @param maze 
 	 */
-	public void move(float deltaMult) {
+	public void move(float deltaTime) {
 		
 		boolean hasChanged = changex != 0 || changey != 0;
-		if (hasChanged && timeFromLastMove > SPEED_CONST) {
+		if (hasChanged && canMove(deltaTime)) {
 			setPosition(findNextPos());
-			
-			//Moved, reset timer
-			timeFromLastMove = 0;
-		} else {
-			timeFromLastMove += deltaMult;
 		}
 		
 		resetMovement();
@@ -116,15 +108,4 @@ public class Player extends Creature {
 	public int getChangeY() {
 		return changey;
 	}
-
-	/**
-	 * Getter for timeFromLastMove
-	 * 
-	 * Only used in tests
-	 * @param timeFromLastMove
-	 */
-	public void setTimeFromLastMove(float timeFromLastMove) {
-		this.timeFromLastMove = timeFromLastMove;
-	}
-	
 }

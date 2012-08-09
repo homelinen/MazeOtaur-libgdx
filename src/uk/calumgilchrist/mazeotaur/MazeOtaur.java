@@ -1,5 +1,9 @@
 package uk.calumgilchrist.mazeotaur;
 
+import java.util.LinkedList;
+
+import uk.calumgilchrist.mazeotaur.ai.AIManager;
+
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -32,6 +36,9 @@ public class MazeOtaur implements ApplicationListener {
 	private Texture playerTex;
 	private Cell playerCell;
 	
+	private AIManager aiman;
+	private Texture enemyTex;
+	
 	@Override
 	public void create() {
 		
@@ -55,8 +62,11 @@ public class MazeOtaur implements ApplicationListener {
 		setupMaze();
 		
 		player = new Player(10, "Larry", new Vector2(0,0));
-		setUpPlayerTexture();
+		playerTex = getCircleTexture(Color.GREEN);
 		
+		aiman = new AIManager();
+		setUpAI();
+		enemyTex = getCircleTexture(Color.RED);
 	}
 	
 	/**
@@ -95,13 +105,43 @@ public class MazeOtaur implements ApplicationListener {
 	public void drawPlayer(SpriteBatch batch) {
 		
 		Vector2 playPos = player.getPosition().cpy();
-		Vector2 realPos = new Vector2(0, getScreenOffset());
-		
-		playPos.mul(cellSize);
-		realPos.add(playPos.x, - playPos.y);
-		
+		Vector2 realPos = getRealPosition(playPos);
 		
 		batch.draw(playerTex, realPos.x, realPos.y);
+	}
+	
+	/**
+	 * Render the player as a circle
+	 * @param batch
+	 */
+	public void drawEnemies(SpriteBatch batch) {
+		
+		Vector2 enemyPos;
+		Vector2 realPos;
+		
+		LinkedList<Enemy> enemies = (LinkedList<Enemy>) aiman.getCreatures();
+		for (Enemy enemy: enemies) {
+			//TODO: This is identical to player drawing
+			enemyPos = enemy.getPosition().cpy();
+
+			realPos = getRealPosition(enemyPos);
+			batch.draw(enemyTex, realPos.x, realPos.y);
+		}
+	}
+	
+	/**
+	 * Transform a cell position into a screen position
+	 * @param cellPos Position in cell co-ordinates
+	 * @return A screen co-ordinate
+	 */
+	public Vector2 getRealPosition(Vector2 cellPos) {
+		
+		Vector2 realPos = new Vector2(0, getScreenOffset());
+		
+		cellPos.mul(cellSize);
+		realPos.add(cellPos.x, - cellPos.y);
+		
+		return realPos;
 	}
 	
 	/**
@@ -121,18 +161,40 @@ public class MazeOtaur implements ApplicationListener {
 		wallTex = new Texture(Gdx.files.internal("wall.png"));
 	}
 
-	public void setUpPlayerTexture() {
-		
+	/**
+	 * Create a coloured circle texture
+	 * @param color Color of the circle
+	 * @return new Texture with a circle
+	 */
+	public Texture getCircleTexture(Color color) {
 		//Should be size of cell
 		int circleDiameter = (int) cellSize;
 		int circRadius = circleDiameter / 2;
 		Pixmap circle = new Pixmap(circleDiameter, circleDiameter, Format.RGBA8888);
 		
-		circle.setColor(Color.GREEN);
+		circle.setColor(color);
 		circle.fillCircle(circRadius, circRadius, circRadius);
 		
-		playerTex = new Texture(circle);
+		Texture blankTex = new Texture(circle);
 		circle.dispose();
+		
+		return blankTex;
+	}
+	
+	/**
+	 * Add enemies and initialise their patrol paths
+	 */
+	public void setUpAI() {
+		//TODO: Automate this
+		int health = 10;
+		String name = "Minny";
+		Vector2 startPos = maze.findPassableCell(new Vector2(10, 10));
+		float speed = 0.5f;
+		
+		Vector2 goalPoint = new Vector2(15,10);
+		
+		Minotaur min = new Minotaur(health, name, startPos, speed);
+		aiman.addCreature(min, maze, maze.findPassableCell(goalPoint));
 	}
 	
 	/**
@@ -165,11 +227,13 @@ public class MazeOtaur implements ApplicationListener {
 			
 			drawMaze(maze, batch);
 			drawPlayer(batch);
+			drawEnemies(batch);
 		batch.end();
 		//Gdx.app.log("FPS", ""+ Gdx.graphics.getFramesPerSecond());
 		
 		inputCheck();
 		playerMovement();
+		aiman.update(Gdx.graphics.getDeltaTime());
 	}
 
 	/**

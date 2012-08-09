@@ -6,7 +6,8 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ TestPlayer.class, TestMaze.class, TestMazeGenerator.class })
+@SuiteClasses({ TestPlayer.class, TestMaze.class, TestMazeGenerator.class, 
+	TestAIManager.class, EnemyTest.class })
 public class MazeSuite {
 
 	@Test
