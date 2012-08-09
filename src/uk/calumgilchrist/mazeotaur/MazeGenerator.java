@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Vector2;
 
 public class MazeGenerator extends Maze {
 
@@ -19,19 +18,19 @@ public class MazeGenerator extends Maze {
 	 */
 	public void createMaze() {
 		Random rand = new Random();
-		LinkedList<Vector2> walls = new LinkedList<Vector2>();
+		LinkedList<Vecter> walls = new LinkedList<Vecter>();
 		int maxConnections = 1;
 		
 		int startX = 0;
 		int startY = 0;
 		
-		Vector2 startCell = new Vector2(startX, startY);
+		Vecter startCell = new Vecter(startX, startY);
 		getCell(startCell).setPassable(true);
 		addAdjacentWalls(walls, startCell);
 		
 		Cell tempCell = new Cell(false);
 		
-		for(Vector2 wall: walls) {
+		for(Vecter wall: walls) {
 			Gdx.app.log("Initial Wall", wall.toString());
 		}
 		
@@ -54,11 +53,11 @@ public class MazeGenerator extends Maze {
 	 * @param cell Cell to check around
 	 * @return
 	 */
-	public List<Vector2> addAdjacentWalls(List<Vector2> walls, Vector2 cell) {
+	public List<Vecter> addAdjacentWalls(List<Vecter> walls, Vecter cell) {
 		
-		Iterator<Vector2> points = getSurroundingPoints(cell);
+		Iterator<Vecter> points = getSurroundingPoints(cell);
 		
-		Vector2 point = new Vector2();
+		Vecter point = new Vecter();
 		while (points.hasNext()) {	
 			point = points.next();
 			
@@ -75,8 +74,8 @@ public class MazeGenerator extends Maze {
 	 * @param pos
 	 * @return
 	 */
-	private int checkAdjacent(Vector2 pos) {
-		Iterator<Vector2> points = getSurroundingPoints(pos);
+	private int checkAdjacent(Vecter pos) {
+		Iterator<Vecter> points = getSurroundingPoints(pos);
 		
 		int connected = 0;
 		while (points.hasNext()) {

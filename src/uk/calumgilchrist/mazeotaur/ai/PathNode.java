@@ -1,6 +1,6 @@
 package uk.calumgilchrist.mazeotaur.ai;
 
-import com.badlogic.gdx.math.Vector2;
+import uk.calumgilchrist.mazeotaur.Vecter;
 
 /**
  * Path 
@@ -11,14 +11,14 @@ public class PathNode implements Comparable<PathNode> {
 
 	private PathNode parent;
 	private int cost;
-	private Vector2 point;
+	private Vecter point;
 	
 	/**
 	 * A node represents a point and the cost to that node
 	 * @param point Point on map
 	 * @param cost Cost to reach
 	 */
-	public PathNode(Vector2 point, int cost) {
+	public PathNode(Vecter point, int cost) {
 		this.point = point;
 		this.cost = cost;
 		parent = null;
@@ -29,7 +29,7 @@ public class PathNode implements Comparable<PathNode> {
 	 * @param cost Cost to Reach
 	 * @param parent Who lead you here
 	 */
-	public PathNode(Vector2 point, int cost, PathNode parent) {
+	public PathNode(Vecter point, int cost, PathNode parent) {
 		this.parent = parent;
 		this.cost = cost;
 		this.point = point;
@@ -40,7 +40,7 @@ public class PathNode implements Comparable<PathNode> {
 	 */
 	public PathNode() {
 		this.parent = null;
-		this.point = new Vector2();
+		this.point = new Vecter();
 		this.cost = 0;
 	}
 
@@ -52,7 +52,7 @@ public class PathNode implements Comparable<PathNode> {
 		this.cost = cost;
 	}
 
-	public Vector2 getPoint() {
+	public Vecter getPoint() {
 		return point;
 	}
 	

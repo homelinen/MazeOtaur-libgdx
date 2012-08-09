@@ -7,9 +7,8 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.badlogic.gdx.math.Vector2;
-
 import uk.calumgilchrist.mazeotaur.MazeGenerator;
+import uk.calumgilchrist.mazeotaur.Vecter;
 
 public class TestMazeGenerator {
 
@@ -25,15 +24,15 @@ public class TestMazeGenerator {
 		float x = 5;
 		float y = 6;
 		
-		LinkedList<Vector2> walls = new LinkedList<Vector2>();
+		LinkedList<Vecter> walls = new LinkedList<Vecter>();
 		assertTrue("Empty List", walls.isEmpty());
 		
-		maze.addAdjacentWalls(walls, new Vector2(x,y));
+		walls = (LinkedList<Vecter>) maze.addAdjacentWalls(walls, new Vecter(x,y));
 		
 		assertFalse("List isn't empty", walls.isEmpty());
 		
 		boolean test = false;
-		for (Vector2 wall: walls) {
+		for (Vecter wall: walls) {
 			test = wall.x == x || wall.y == y;
 			assertTrue("Walls are diagonal", test);
 		}

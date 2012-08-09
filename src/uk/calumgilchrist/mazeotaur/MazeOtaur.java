@@ -15,7 +15,6 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Logger;
 
 public class MazeOtaur implements ApplicationListener {
@@ -61,7 +60,7 @@ public class MazeOtaur implements ApplicationListener {
 		
 		setupMaze();
 		
-		player = new Player(10, "Larry", new Vector2(0,0));
+		player = new Player(10, "Larry", new Vecter(0,0));
 		playerTex = getCircleTexture(Color.GREEN);
 		
 		aiman = new AIManager();
@@ -104,8 +103,8 @@ public class MazeOtaur implements ApplicationListener {
 	 */
 	public void drawPlayer(SpriteBatch batch) {
 		
-		Vector2 playPos = player.getPosition().cpy();
-		Vector2 realPos = getRealPosition(playPos);
+		Vecter playPos = player.getPosition().cpy();
+		Vecter realPos = getRealPosition(playPos);
 		
 		batch.draw(playerTex, realPos.x, realPos.y);
 	}
@@ -116,8 +115,8 @@ public class MazeOtaur implements ApplicationListener {
 	 */
 	public void drawEnemies(SpriteBatch batch) {
 		
-		Vector2 enemyPos;
-		Vector2 realPos;
+		Vecter enemyPos;
+		Vecter realPos;
 		
 		LinkedList<Enemy> enemies = (LinkedList<Enemy>) aiman.getCreatures();
 		for (Enemy enemy: enemies) {
@@ -134,9 +133,9 @@ public class MazeOtaur implements ApplicationListener {
 	 * @param cellPos Position in cell co-ordinates
 	 * @return A screen co-ordinate
 	 */
-	public Vector2 getRealPosition(Vector2 cellPos) {
+	public Vecter getRealPosition(Vecter cellPos) {
 		
-		Vector2 realPos = new Vector2(0, getScreenOffset());
+		Vecter realPos = new Vecter(0, getScreenOffset());
 		
 		cellPos.mul(cellSize);
 		realPos.add(cellPos.x, - cellPos.y);
@@ -188,10 +187,10 @@ public class MazeOtaur implements ApplicationListener {
 		//TODO: Automate this
 		int health = 10;
 		String name = "Minny";
-		Vector2 startPos = maze.findPassableCell(new Vector2(10, 10));
+		Vecter startPos = maze.findPassableCell(new Vecter(10, 10));
 		float speed = 0.5f;
 		
-		Vector2 goalPoint = new Vector2(15,10);
+		Vecter goalPoint = new Vecter(15,10);
 		
 		Minotaur min = new Minotaur(health, name, startPos, speed);
 		aiman.addCreature(min, maze, maze.findPassableCell(goalPoint));

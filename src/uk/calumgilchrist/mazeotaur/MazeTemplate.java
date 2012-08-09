@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.math.Vector2;
 
 /**
  * Holds a template of a maze from a file
@@ -63,13 +62,13 @@ public class MazeTemplate extends Maze {
 	 * Generate a maze from a list of passable co-ords
 	 * @param points
 	 */
-	public void createMaze(List<Vector2> points) {
+	public void createMaze(List<Vecter> points) {
 		
-		Vector2 tempVec = new Vector2();
+		Vecter tempVec = new Vecter();
 		
 		for (int x = 0; x < getWidth(); x++) {
 			for (int y = 0; y < getHeight(); y++) {
-				tempVec = new Vector2(x, y);
+				tempVec = new Vecter(x, y);
 				if (points.contains(tempVec)) {
 					getCell(tempVec).setPassable(true);
 				}
