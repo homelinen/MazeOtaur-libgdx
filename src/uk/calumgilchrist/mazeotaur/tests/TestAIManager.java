@@ -8,14 +8,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 
-import uk.calumgilchrist.mazeotaur.Maze;
-import uk.calumgilchrist.mazeotaur.MazeGenerator;
 import uk.calumgilchrist.mazeotaur.MazeTemplate;
 import uk.calumgilchrist.mazeotaur.Minotaur;
 import uk.calumgilchrist.mazeotaur.Vecter;
@@ -75,8 +71,8 @@ public class TestAIManager {
 			LinkedList<Vecter> path = (LinkedList<Vecter>) aiman.findPath(mazes[i], start[i], goal[i]);
 			
 			assertTrue("Path is not 0", path.size() > 0);
-			assertTrue("First node is start", areEqualVectors(start[i], path.getFirst()));
-			assertTrue("Last node is goal", areEqualVectors(goal[i], path.getLast()));
+			assertTrue("First node is start", start[i].equals(path.getFirst()));
+			assertTrue("Last node is goal", goal[i].equals(path.getLast()));
 			assertTrue("Valid Path", isPath(path));
 		}
 	}
@@ -96,20 +92,6 @@ public class TestAIManager {
 		aiman.addCreature(min, mazes[0], endGoal);
 		
 		assertEquals("One creatures has been added", 1, aiman.getCreatureCount());
-	}
-		
-	/**
-	 * Determine whether two vectors represent the same co-ords
-	 * @param a Vector 1
-	 * @param b Vector 2
-	 * @return true if the vectors are the same
-	 */
-	public boolean areEqualVectors(Vecter a, Vecter b) {
-		if (a.x == b.x && a.y == b.y){
-			return true;
-		} else {
-			return false;
-		}
 	}
 		
 	/**

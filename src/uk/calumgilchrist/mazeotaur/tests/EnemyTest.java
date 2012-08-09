@@ -40,23 +40,8 @@ public class EnemyTest {
 		enemy.setPath(points);
 		enemy.setTimeFromLastMove(100);
 		
-		assertTrue("Enemy is at start", areEqualVectors(new Vecter(0, 0), enemy.getPosition()));
+		assertTrue("Enemy is at start", new Vecter(0, 0).equals(enemy.getPosition()));
 		enemy.moveNode(0.5f);
-		assertFalse("Enemy is not at start", areEqualVectors(new Vecter(0, 0), enemy.getPosition()));
-	}
-
-	/**
-	 * Determine whether two vectors represent the same co-ords
-	 * TODO: Move into a Vector class
-	 * @param a Vector 1
-	 * @param b Vector 2
-	 * @return true if the vectors are the same
-	 */
-	public boolean areEqualVectors(Vecter a, Vecter b) {
-		if (a.x == b.x && a.y == b.y){
-			return true;
-		} else {
-			return false;
-		}
+		assertFalse("Enemy is not at start", new Vecter(0, 0).equals(enemy.getPosition()));
 	}
 }
