@@ -189,11 +189,11 @@ public class MazeOtaur implements ApplicationListener {
 		int health = 10;
 		String name = "Minny";
 		Vector2 startPos = maze.findPassableCell(new Vector2(10, 10));
-		int patrolLength = 5;
+		float speed = 0.5f;
 		
 		Vector2 goalPoint = new Vector2(15,10);
 		
-		Minotaur min = new Minotaur(health, name, startPos, patrolLength);
+		Minotaur min = new Minotaur(health, name, startPos, speed);
 		aiman.addCreature(min, maze, maze.findPassableCell(goalPoint));
 	}
 	
@@ -233,7 +233,7 @@ public class MazeOtaur implements ApplicationListener {
 		
 		inputCheck();
 		playerMovement();
-		aiman.update();
+		aiman.update(Gdx.graphics.getDeltaTime());
 	}
 
 	/**

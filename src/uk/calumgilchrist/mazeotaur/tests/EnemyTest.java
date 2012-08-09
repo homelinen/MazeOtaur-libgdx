@@ -33,16 +33,16 @@ public class EnemyTest {
 	@Test
 	public void testSetPath() {
 		enemy.setPath(points);
-		
 		assertSame("Original Path is unchanged", points, enemy.getPath());
 	}
 
 	@Test
 	public void testMoveNode() {
 		enemy.setPath(points);
+		enemy.setTimeFromLastMove(100);
 		
 		assertTrue("Enemy is at start", areEqualVectors(new Vector2(0, 0), enemy.getPosition()));
-		enemy.moveNode();
+		enemy.moveNode(0.5f);
 		assertFalse("Enemy is not at start", areEqualVectors(new Vector2(0, 0), enemy.getPosition()));
 	}
 

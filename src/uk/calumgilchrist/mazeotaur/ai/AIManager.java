@@ -42,10 +42,11 @@ public class AIManager {
 	
 	/**
 	 * Update positions of creature, etc
+	 * @param deltaTime Time from last screen update
 	 */
-	public void update() {
+	public void update(float deltaTime) {
 		for (Enemy creature: creatures) {
-			creature.moveNode();
+			creature.moveNode(deltaTime);
 		}
 	}
 	

@@ -17,7 +17,7 @@ public class Enemy extends Creature {
 	private List<Vector2> nodes;
 	private boolean patrol;
 	private int curNode;
-	private int patrolLength;
+	private boolean reverse;
 	
 	/**
 	 * Create an enemy
@@ -26,13 +26,13 @@ public class Enemy extends Creature {
 	 * @param position where the creature is
 	 * @param patrolLength how many squares to patrol
 	 */
-	public Enemy(int health, String name, Vector2 position, int patrolLength) {
-		super(health, name, position);
+	public Enemy(int health, String name, Vector2 position, float speed) {
+		super(health, name, position, speed);
 		nodes = new LinkedList<Vector2>();
 		
-		this.patrolLength = patrolLength;
 		patrol = true;
 		curNode = 0;
+		reverse = false;
 	}
 	
 	/**
@@ -48,17 +48,30 @@ public class Enemy extends Creature {
 	
 	/**
 	 * Move along path dependent on patrol mode
+	 * @param deltaTime Time from last screen update
 	 */
-	public void moveNode() {
-		if (patrol) {
-			curNode++;
-			setPosition(nodes.get(curNode));
-			
-			if (curNode >= patrolLength) {
-				curNode = 0;
+	public void moveNode(float deltaTime) {
+		if(canMove(deltaTime)) {
+			if (patrol) {
+				if (!reverse) {
+					
+					if (curNode >= nodes.size() - 1) {
+						reverse = true;
+					} else {
+						curNode++;
+					}
+				} else {
+					
+					if (curNode <= 0) {
+						reverse = false;
+					} else {
+						curNode--;
+					}
+				}
+				setPosition(nodes.get(curNode));
+			} else {
+				setPosition(nodes.remove(0));
 			}
-		} else {
-			setPosition(nodes.remove(0));
 		}
 	}
 	
