@@ -8,7 +8,7 @@ import org.junit.Test;
 import uk.calumgilchrist.mazeotaur.MazeTemplate;
 import uk.calumgilchrist.mazeotaur.Vecter;
 
-public class TestMaze {
+public class TestMazeTemplate {
 
 	private MazeTemplate maze;
 	private int width;
