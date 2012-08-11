@@ -146,6 +146,73 @@ public class Maze {
 	}
 	
 	/**
+	 * Is it possible to go straight between two points
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	public boolean isLinePassable(Vecter start, Vecter end) {
+		
+		float lowCoord = 0;
+		float highCoord = 0;
+		float fixedCoord = 0;
+		
+		if (start.equals(end)) {
+			return getCell(start).isPassable();
+		}
+		
+		if (start.x == end.x) {
+			fixedCoord = start.x;
+			
+			if (start.y > end.y) {
+				highCoord = start.y;
+				lowCoord = end.y;
+			} else if (start.y < end.y) {
+				highCoord = end.y;
+				lowCoord = start.y;
+			} 			
+			
+			System.out.println("fixed: " + fixedCoord + " low: " + lowCoord + " high: " + highCoord);
+			return checkLine(new Vecter(fixedCoord, lowCoord), new Vecter(fixedCoord, highCoord));
+			
+		} else if (start.y == end.y) {
+			fixedCoord = start.y;
+			
+			if (start.x > end.x) {
+				highCoord = start.x;
+				lowCoord = end.x;
+			} else if (start.x < end.x) {
+				highCoord = end.x;
+				lowCoord = start.x;
+			} 			
+			System.out.println("fixed: " + fixedCoord + " low: " + lowCoord + " high: " + highCoord);
+			return checkLine(new Vecter(lowCoord, fixedCoord), new Vecter(highCoord, fixedCoord));
+		} else {
+			//Lines are diagonal
+			return false;
+		}
+		 
+	}
+	
+	/**
+	 * Check between two points to ensure they are passable
+	 * 
+	 * Does not check whether the two points lie on the same axis
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	private boolean checkLine(Vecter start, Vecter end) {
+		for (int x = (int) start.x; x <= (int) end.x; x++) {
+			for (int y = (int) start.y; y <= (int) end.y; y++) {
+				if (!getCell(x, y).isPassable()) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	/**
 	 * Return the cell from the array at x, y
 	 * @param x
 	 * @param y
