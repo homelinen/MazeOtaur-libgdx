@@ -3,6 +3,8 @@ package uk.calumgilchrist.mazeotaur;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.badlogic.gdx.Gdx;
+
 /**
  * An enemy is a creature with malicious intent against the player.
  * 
@@ -43,9 +45,7 @@ public class Enemy extends Creature {
 	 */
 	public void setPath(List<Vecter> points) {
 		curNode = 0;
-		nodes = points;
-		
-		setPosition(nodes.get(0));
+		this.nodes = points;
 	}
 	
 	/**
@@ -53,7 +53,7 @@ public class Enemy extends Creature {
 	 * @param deltaTime Time from last screen update
 	 */
 	public void moveNode(float deltaTime) {
-		if(canMove(deltaTime)) {
+		if(canMove(deltaTime) && !nodes.isEmpty()) {
 			if (patrol) {
 				if (!reverse) {
 					
@@ -72,6 +72,7 @@ public class Enemy extends Creature {
 				}
 				setPosition(nodes.get(curNode));
 			} else {
+				Gdx.app.log("Chase path",nodes.toString());
 				setPosition(nodes.remove(0));
 			}
 		}
@@ -97,5 +98,13 @@ public class Enemy extends Creature {
 	
 	public List<Vecter> getPath() {
 		return nodes;
+	}
+
+	/**
+	 * Modify whether the creature is patrolling
+	 * @param b
+	 */
+	public void setChase(boolean b) {
+		patrol = b;
 	}
 }
