@@ -16,17 +16,21 @@ public class Enemy extends Creature {
 	private boolean patrol;
 	private int curNode;
 	private boolean reverse;
+	private int lineOfSight;
 	
 	/**
 	 * Create an enemy
 	 * @param health how much damage can be taken
 	 * @param name Unique name
 	 * @param position where the creature is
-	 * @param patrolLength how many squares to patrol
+	 * @param speed Movement speed in seconds
+	 * @param lOS How far can be seen
 	 */
-	public Enemy(int health, String name, Vecter position, float speed) {
+	public Enemy(int health, String name, Vecter position, float speed, int lOS) {
 		super(health, name, position, speed);
 		nodes = new LinkedList<Vecter>();
+		
+		lineOfSight = lOS;
 		
 		patrol = true;
 		curNode = 0;
@@ -71,6 +75,24 @@ public class Enemy extends Creature {
 				setPosition(nodes.remove(0));
 			}
 		}
+	}
+	
+	/**
+	 * Returns true if the player happens to be in the line of sight
+	 * of the creature
+	 * @param playPos
+	 * @return Player is/isn't in sight
+	 */
+	public boolean isPlayerInSight(Vecter playPos, Maze maze) {
+		Vecter curPos = getPosition();
+		
+		if (curPos.dst(playPos) <= lineOfSight) {
+			
+			// Check if the player is in line with self
+			return maze.isLinePassable(curPos, playPos);
+		}
+		
+		return false;
 	}
 	
 	public List<Vecter> getPath() {
