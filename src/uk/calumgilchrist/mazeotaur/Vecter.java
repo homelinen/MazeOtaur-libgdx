@@ -15,7 +15,7 @@ public class Vecter extends Vector2 {
 	}
 	
 	public Vecter(Vecter v) {
-		set(v);
+		super(v);
 	}
 
 	public Vecter(float x, float y) {
@@ -35,7 +35,6 @@ public class Vecter extends Vector2 {
 		}
 		
 		if (!(o instanceof Vector2)) {
-			System.out.println("Fail");
 			return false;
 		}
 		
