@@ -10,8 +10,6 @@ import uk.calumgilchrist.mazeotaur.Enemy;
 import uk.calumgilchrist.mazeotaur.Maze;
 import uk.calumgilchrist.mazeotaur.Vecter;
 
-import com.badlogic.gdx.Gdx;
-
 /**
  * Controls the enemies movement and positioning in the map
  * @author homelinen

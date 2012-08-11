@@ -87,8 +87,9 @@ public class TestAIManager {
 		Vecter startPos = new Vecter(0,0);
 		int patrolLength = 5;
 		Vecter endGoal = new Vecter(0, 9);
+		int lineOfSight = 5;
 		
-		Minotaur min = new Minotaur(health, "Fred", startPos, patrolLength);
+		Minotaur min = new Minotaur(health, "Fred", startPos, patrolLength, lineOfSight);
 		aiman.addCreature(min, mazes[0], endGoal);
 		
 		assertEquals("One creatures has been added", 1, aiman.getCreatureCount());

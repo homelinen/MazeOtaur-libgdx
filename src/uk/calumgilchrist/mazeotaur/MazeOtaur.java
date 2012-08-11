@@ -189,10 +189,11 @@ public class MazeOtaur implements ApplicationListener {
 		String name = "Minny";
 		Vecter startPos = maze.findPassableCell(new Vecter(10, 10));
 		float speed = 0.5f;
+		int lineOfSight = 5;
 		
 		Vecter goalPoint = new Vecter(15,10);
 		
-		Minotaur min = new Minotaur(health, name, startPos, speed);
+		Minotaur min = new Minotaur(health, name, startPos, speed, lineOfSight);
 		aiman.addCreature(min, maze, maze.findPassableCell(goalPoint));
 	}
 	
