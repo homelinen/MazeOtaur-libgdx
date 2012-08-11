@@ -10,8 +10,6 @@ import uk.calumgilchrist.mazeotaur.Enemy;
 import uk.calumgilchrist.mazeotaur.Maze;
 import uk.calumgilchrist.mazeotaur.Vecter;
 
-import com.badlogic.gdx.Gdx;
-
 /**
  * Controls the enemies movement and positioning in the map
  * @author homelinen
@@ -44,9 +42,22 @@ public class AIManager {
 	 * Update positions of creature, etc
 	 * @param deltaTime Time from last screen update
 	 */
-	public void update(float deltaTime) {
+	public void update(float deltaTime, Vecter playPos, Maze maze) {
+		LinkedList<Vecter> newChase;
+		
 		for (Enemy creature: creatures) {
+			if (creature.isPlayerInSight(playPos, maze)) {
+				newChase = (LinkedList<Vecter>) findPath(maze, creature.getPosition(), playPos);
+				
+				//Remove head, as it's current position
+				creature.setPath(newChase);
+				creature.setChase(true);
+			} else {
+				//TODO Set new patrol route
+				creature.setChase(false);
+			}
 			creature.moveNode(deltaTime);
+			
 		}
 	}
 	
@@ -152,11 +163,15 @@ public class AIManager {
 		route.addFirst(goal.getPoint());
 		
 		PathNode tempNode = goal.getParent();
-		route.addFirst(tempNode.getPoint());
 		
-		while (!tempNode.getPoint().equals(start) && tempNode != null) {
-			tempNode = tempNode.getParent();
+		//If goal has no parent, we have the route already
+		if (tempNode != null) {
 			route.addFirst(tempNode.getPoint());
+			
+			while (!tempNode.getPoint().equals(start) && tempNode != null) {
+				tempNode = tempNode.getParent();
+				route.addFirst(tempNode.getPoint());
+			}
 		}
 		
 		return route;

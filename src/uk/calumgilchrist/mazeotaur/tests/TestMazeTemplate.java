@@ -2,13 +2,17 @@ package uk.calumgilchrist.mazeotaur.tests;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
+
 import org.junit.Before;
 import org.junit.Test;
+
+import com.badlogic.gdx.files.FileHandle;
 
 import uk.calumgilchrist.mazeotaur.MazeTemplate;
 import uk.calumgilchrist.mazeotaur.Vecter;
 
-public class TestMaze {
+public class TestMazeTemplate {
 
 	private MazeTemplate maze;
 	private int width;
@@ -16,16 +20,27 @@ public class TestMaze {
 	
 	@Before
 	public void setUp() {
-		width = 9;
-		height = 9;
+		width = 10;
+		height = 10;
+		
+		FileHandle file = new FileHandle(new File("assets/testmazes/sightTest.txt"));
 		
 		maze = new MazeTemplate(width, height);
+		maze.createMaze(file);
 	}
 	
 	@Test
 	public void testMazeTemplate() {
 		assertEquals(width, maze.getWidth());
 		assertEquals(height, maze.getHeight());
+	}
+	
+	/**
+	 * TODO: Check each line of file and current maze match
+	 */
+	@Test
+	public void testCreateMaze() {
+		
 	}
 
 	@Test
@@ -67,4 +82,24 @@ public class TestMaze {
 		assertNull(maze.getCell(cellBottomLeft));
 	}
 
+	@Test 
+	public void testIsLinePassable(){
+		Vecter start = new Vecter();
+		Vecter end = new Vecter();
+		
+		start = new Vecter(0,0);
+		assertTrue("Player is in sight", maze.isLinePassable(start, end));
+		
+		start = new Vecter(9,0);
+		end = new Vecter(9, 9);
+		assertTrue("Player is in sight", maze.isLinePassable(start, end));
+		
+		start = new Vecter(0,9);
+		end = new Vecter(9,9);
+		assertFalse("Player is not in sight", maze.isLinePassable(start, end));
+		
+		start = new Vecter(0,0);
+		end = new Vecter(0, 9);
+		assertFalse("Player is not in sight", maze.isLinePassable(start, end));
+	}
 }

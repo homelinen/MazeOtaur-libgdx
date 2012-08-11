@@ -14,8 +14,8 @@ public class Minotaur extends Enemy {
 	 * @param position where the creature is
 	 * @param speed how fast to move
 	 */
-	public Minotaur(int health, String name, Vecter position, float speed) {
-		super(health, name, position, speed);
+	public Minotaur(int health, String name, Vecter position, float speed, int lOS) {
+		super(health, name, position, speed, lOS);
 	}
 
 }

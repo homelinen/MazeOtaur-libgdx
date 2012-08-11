@@ -19,11 +19,12 @@ import uk.calumgilchrist.mazeotaur.ai.AIManager;
 
 public class TestAIManager {
 
-	private MazeTemplate[] mazes;	
-	private int mazeHeight;
+	private MazeTemplate[] mazes;		
+
 	private int mazeWidth;
+	private int mazeHeight;
+
 	private int numberOfTests;
-	
 	private AIManager aiman;
 	
 	@Before
@@ -54,18 +55,28 @@ public class TestAIManager {
 	 */
 	@Test
 	public void testFindPath() {
+		int xMax = mazeWidth - 1;
+		int yMax = mazeHeight -1;
+		
+		int x;
+		int y;
 		
 		Vecter[] start = new Vecter[numberOfTests];
 		Vecter[] goal = new Vecter[numberOfTests];
 		
-		start[0] = new Vecter(0, 9);
-		goal[0] = new Vecter(9,0);
+		start[0] = new Vecter(0, yMax);
+		goal[0] = new Vecter(xMax,0);
 		
 		start[1] = new Vecter(0, 0);
-		goal[1] = new Vecter(8,9);
+		
+		x = 8;
+		goal[1] = new Vecter(x,yMax);
 		
 		start[2] = new Vecter(0, 0);
-		goal[2] = new Vecter(4,4);
+		
+		x = 4;
+		y = 4;
+		goal[2] = new Vecter(x, y);
 		
 		for (int i = 0; i < numberOfTests; i++) {
 			LinkedList<Vecter> path = (LinkedList<Vecter>) aiman.findPath(mazes[i], start[i], goal[i]);
@@ -86,12 +97,14 @@ public class TestAIManager {
 		int health = 10;
 		Vecter startPos = new Vecter(0,0);
 		int patrolLength = 5;
-		Vecter endGoal = new Vecter(0, 9);
+		Vecter endGoal = new Vecter(0, mazeHeight - 1);
+		int lineOfSight = 5;
 		
-		Minotaur min = new Minotaur(health, "Fred", startPos, patrolLength);
+		Minotaur min = new Minotaur(health, "Fred", startPos, patrolLength, lineOfSight);
 		aiman.addCreature(min, mazes[0], endGoal);
 		
-		assertEquals("One creatures has been added", 1, aiman.getCreatureCount());
+		int creatureCount = 1;
+		assertEquals("One creatures has been added", creatureCount, aiman.getCreatureCount());
 	}
 		
 	/**
