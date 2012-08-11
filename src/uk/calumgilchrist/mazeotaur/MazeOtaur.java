@@ -233,7 +233,7 @@ public class MazeOtaur implements ApplicationListener {
 		
 		inputCheck();
 		playerMovement();
-		aiman.update(Gdx.graphics.getDeltaTime());
+		aiman.update(Gdx.graphics.getDeltaTime(), player.getPosition(), maze);
 	}
 
 	/**
