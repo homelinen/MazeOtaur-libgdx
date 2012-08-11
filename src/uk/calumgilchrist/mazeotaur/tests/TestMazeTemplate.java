@@ -96,13 +96,10 @@ public class TestMazeTemplate {
 		
 		start = new Vecter(0,9);
 		end = new Vecter(9,9);
-		System.out.println("Start: " + start + " End: " + end);
-		
 		assertFalse("Player is not in sight", maze.isLinePassable(start, end));
 		
 		start = new Vecter(0,0);
 		end = new Vecter(0, 9);
 		assertFalse("Player is not in sight", maze.isLinePassable(start, end));
-		maze.isLinePassable(start, end);
 	}
 }
