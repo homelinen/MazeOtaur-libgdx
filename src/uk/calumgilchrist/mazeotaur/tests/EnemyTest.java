@@ -69,25 +69,33 @@ public class EnemyTest {
 		
 		int xMax = mazeWidth - 1;
 		int yMax = mazeHeight - 1;
-		Vecter playPos = new Vecter(mazeWidth - 1,0);
+		
+		int numTests = 4;
+		Vecter[] playerPos = new Vecter[numTests];
+		Vecter[] enemyPos = new Vecter[numTests];
+		
+		playerPos[0] = new Vecter(mazeWidth - 1,0);
+		playerPos[1] = new Vecter(mazeWidth - 1,0);
+		playerPos[2] = new Vecter(xMax, yMax);
+		playerPos[3] = new Vecter(0, yMax);
+		
+		enemyPos[0] = new Vecter(0, 0);
+		enemyPos[1] = new Vecter(xMax, 0);
+		enemyPos[2] = new Vecter(0, yMax);
+		enemyPos[3] = new Vecter(0, 0);
 		
 		MazeTemplate maze = new MazeTemplate(mazeWidth, mazeHeight);
 		FileHandle file = new FileHandle(new File("assets/testmazes/sightTest.txt"));
 		maze.createMaze(file);
 		
-		enemy.setPosition(new Vecter(0,0));
-		assertTrue("Player is in sight", enemy.isPlayerInSight(playPos, maze));
+		for (int i = 0; i < numTests / 2; i++) {
+			enemy.setPosition(enemyPos[i]);
+			assertTrue("Player is in sight", enemy.isPlayerInSight(playerPos[i], maze));
+		}
 		
-		enemy.setPosition(new Vecter(xMax,0));
-		playPos.set(xMax, yMax);
-		assertTrue("Player is in sight", enemy.isPlayerInSight(playPos, maze));
-		
-		enemy.setPosition(new Vecter(0, yMax));
-		playPos.set(xMax, yMax);
-		assertFalse("Player is not in sight", enemy.isPlayerInSight(playPos, maze));
-		
-		enemy.setPosition(new Vecter(0,0));
-		playPos.set(0, yMax);
-		assertFalse("Player is not in sight", enemy.isPlayerInSight(playPos, maze));
+		for (int i = numTests / 2; i < numTests; i++) {
+			enemy.setPosition(enemyPos[i]);
+			assertFalse("Player is not in sight", enemy.isPlayerInSight(playerPos[i], maze));
+		}
 	}
 }
