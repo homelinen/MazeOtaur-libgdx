@@ -3,8 +3,6 @@ package uk.calumgilchrist.mazeotaur;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import com.badlogic.gdx.Gdx;
-
 public class Maze {
 
 	private int width;
@@ -100,7 +98,7 @@ public class Maze {
 	}
 	
 	/**
-	 * Find the closest valid grid vell
+	 * Find the closest valid grid cell
 	 * @param closeTo
 	 */
 	public Vecter findPassableCell(Vecter closeTo) {
@@ -124,12 +122,14 @@ public class Maze {
 			}
 		}
 		
-		//Entire Maze is impassible
+		//Entire Maze is inpassible
 		return null;
 	}
 	
 	/**
-	 * Check if the given points are diagonal to the other
+	 * Check if the given points are diagonal to each other
+	 * 
+	 * TODO: Add a method for dealing with Vectors
 	 * @param x
 	 * @param y
 	 * @param pointX
@@ -159,9 +159,7 @@ public class Maze {
 		
 		if (start.equals(end)) {
 			return getCell(start).isPassable();
-		}
-		
-		if (start.x == end.x) {
+		} else if (start.x == end.x) {
 			fixedCoord = start.x;
 			
 			if (start.y > end.y) {
@@ -172,7 +170,6 @@ public class Maze {
 				lowCoord = start.y;
 			} 			
 			
-			System.out.println("fixed: " + fixedCoord + " low: " + lowCoord + " high: " + highCoord);
 			return checkLine(new Vecter(fixedCoord, lowCoord), new Vecter(fixedCoord, highCoord));
 			
 		} else if (start.y == end.y) {
@@ -185,15 +182,14 @@ public class Maze {
 				highCoord = end.x;
 				lowCoord = start.x;
 			} 			
-			System.out.println("fixed: " + fixedCoord + " low: " + lowCoord + " high: " + highCoord);
+			
 			return checkLine(new Vecter(lowCoord, fixedCoord), new Vecter(highCoord, fixedCoord));
 		} else {
 			//Lines are diagonal
 			return false;
 		}
-		 
 	}
-	
+		
 	/**
 	 * Check between two points to ensure they are passable
 	 * 

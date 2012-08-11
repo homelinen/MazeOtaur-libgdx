@@ -57,7 +57,6 @@ public class EnemyTest {
 		MazeTemplate maze = new MazeTemplate(10, 10);
 		FileHandle file = new FileHandle(new File("assets/testmazes/sightTest.txt"));
 		maze.createMaze(file);
-		System.out.println(maze.printMaze());
 		
 		enemy.setPosition(new Vecter(0,0));
 		assertTrue("Player is in sight", enemy.isPlayerInSight(playPos, maze));
