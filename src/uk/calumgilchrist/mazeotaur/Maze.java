@@ -138,11 +138,7 @@ public class Maze {
 	 */
 	private boolean isDiagonal(float x, float y, float pointX, float pointY) {
 		
-		if ((x != pointX && y != pointY)) {
-			return true;
-		} else {
-			return false;
-		}
+		return x != pointX && y != pointY;
 	}
 	
 	/**
