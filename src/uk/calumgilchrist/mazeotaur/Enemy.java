@@ -44,8 +44,12 @@ public class Enemy extends Creature {
 	 * @param point - List of points in path
 	 */
 	public void setPath(List<Vecter> points) {
-		curNode = 0;
-		this.nodes = points;
+		
+		//Shouldn't change to a nodelist that's the same
+		if (!nodes.equals(points)) {
+			curNode = 0;
+			this.nodes = points;
+		}
 	}
 	
 	/**
@@ -72,7 +76,6 @@ public class Enemy extends Creature {
 				}
 				setPosition(nodes.get(curNode));
 			} else {
-				Gdx.app.log("Chase path",nodes.toString());
 				setPosition(nodes.remove(0));
 			}
 		}
