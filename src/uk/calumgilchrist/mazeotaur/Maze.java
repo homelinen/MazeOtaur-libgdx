@@ -108,16 +108,23 @@ public class Maze {
 		Vecter neighbour;
 		Iterator<Vecter> neighbours;
 		
+		Cell tempCell;
+		
 		while (!neighbourList.isEmpty()) {
 			neighbour = neighbourList.remove();
 			
-			if (getCell(neighbour).isPassable()) {
-				return neighbour;
-			} else {
-				//Find neighbours and add to the end of the neighbourList
-				neighbours = getSurroundingPoints(closeTo);
-				while (neighbours.hasNext()) {
-					neighbourList.add(neighbours.next());
+			tempCell = getCell(neighbour);
+			
+			// Check cell is actually there
+			if (tempCell != null) {
+				if (tempCell.isPassable()) {
+					return neighbour;
+				} else {
+					//Find neighbours and add to the end of the neighbourList
+					neighbours = getSurroundingPoints(closeTo);
+					while (neighbours.hasNext()) {
+						neighbourList.add(neighbours.next());
+					}
 				}
 			}
 		}
@@ -208,7 +215,8 @@ public class Maze {
 	 * Return the cell from the array at x, y
 	 * @param x
 	 * @param y
-	 * @return The cell at position (x, y)
+	 * @return The cell at position (x, y), if the cell isn't on the map, return
+	 *   a null cell.
 	 */
 	public Cell getCell(int x, int y) {
 		
