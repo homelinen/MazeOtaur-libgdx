@@ -208,17 +208,22 @@ public class MazeOtaur implements ApplicationListener {
 		Vecter goalPoint;
 		for (int i = 0; i < minotaurCount; i++) {
 			health = rand.nextInt(minHealth) + minHealth;
-			startPos = new Vecter(rand.nextInt(maze.getWidth()), rand.nextInt(maze.getHeight()));
-			startPos = maze.findPassableCell(startPos);
 			
-			addedPoint = new Vecter(rand.nextInt(maze.getWidth()), rand.nextInt(maze.getHeight()));
+			//TODO: Fix hackery of looping until satisfied
+			do {
+				startPos = new Vecter(rand.nextInt(maze.getWidth()), rand.nextInt(maze.getHeight()));
+				startPos = maze.findPassableCell(startPos);
+				
+				addedPoint = new Vecter(rand.nextInt(maze.getWidth()), rand.nextInt(maze.getHeight()));
 			
-			if (rand.nextBoolean()) {
-				goalPoint = startPos.cpy().add(addedPoint);
-			} else {
-				goalPoint = startPos.cpy().sub(addedPoint);
-			}
-			goalPoint = maze.findPassableCell(goalPoint);
+			
+				if (rand.nextBoolean()) {
+					goalPoint = startPos.cpy().add(addedPoint);
+				} else {
+					goalPoint = startPos.cpy().sub(addedPoint);
+				}
+				goalPoint = maze.findPassableCell(goalPoint);
+			} while (goalPoint == null);
 			
 			Gdx.app.log("Create Minotaur", "Start Pos: " + startPos + " Added Point: " + addedPoint + " Goal Pos: " + goalPoint);
 			Minotaur min = new Minotaur(health, names[i], startPos, speed, lineOfSight);
