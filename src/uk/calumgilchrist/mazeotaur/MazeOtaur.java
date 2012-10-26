@@ -1,6 +1,7 @@
 package uk.calumgilchrist.mazeotaur;
 
 import java.util.LinkedList;
+import java.util.Random;
 
 import uk.calumgilchrist.mazeotaur.ai.AIManager;
 
@@ -31,9 +32,8 @@ public class MazeOtaur implements ApplicationListener {
 	private Texture passTex;
 	private Texture wallTex;
 	
-	Player player;
+	private Player player;
 	private Texture playerTex;
-	private Cell playerCell;
 	
 	private AIManager aiman;
 	private Texture enemyTex;
@@ -184,17 +184,46 @@ public class MazeOtaur implements ApplicationListener {
 	 * Add enemies and initialise their patrol paths
 	 */
 	public void setUpAI() {
-		//TODO: Automate this
-		int health = 10;
-		String name = "Minny";
-		Vecter startPos = maze.findPassableCell(new Vecter(10, 10));
+		
+		Random rand = new Random();
+	
+		int minotaurCount = 5;
+		
+		String names[] = new String[minotaurCount];
+		
+		names[0] = "Minny";
+		names[1] = "Gargel";
+		names[2] = "Bortaf";
+		names[3] = "Hink";
+		names[4] = "Zink";
+		
+		int health;
+		Vecter startPos;
 		float speed = 0.5f;
 		int lineOfSight = 5;
 		
-		Vecter goalPoint = new Vecter(15,10);
-		
-		Minotaur min = new Minotaur(health, name, startPos, speed, lineOfSight);
-		aiman.addCreature(min, maze, maze.findPassableCell(goalPoint));
+		int minHealth = player.getHealth() * 2;
+
+		Vecter addedPoint;
+		Vecter goalPoint;
+		for (int i = 0; i < minotaurCount; i++) {
+			health = rand.nextInt(minHealth) + minHealth;
+			startPos = new Vecter(rand.nextInt(maze.getWidth()), rand.nextInt(maze.getHeight()));
+			startPos = maze.findPassableCell(startPos);
+			
+			addedPoint = new Vecter(rand.nextInt(maze.getWidth()), rand.nextInt(maze.getHeight()));
+			
+			if (rand.nextBoolean()) {
+				goalPoint = startPos.cpy().add(addedPoint);
+			} else {
+				goalPoint = startPos.cpy().sub(addedPoint);
+			}
+			goalPoint = maze.findPassableCell(goalPoint);
+			
+			Gdx.app.log("Create Minotaur", "Start Pos: " + startPos + " Added Point: " + addedPoint + " Goal Pos: " + goalPoint);
+			Minotaur min = new Minotaur(health, names[i], startPos, speed, lineOfSight);
+			aiman.addCreature(min, maze, goalPoint);
+		}
 	}
 	
 	/**
@@ -258,6 +287,8 @@ public class MazeOtaur implements ApplicationListener {
 	 * Controls when the player moves and where the player can move to
 	 */
 	public void playerMovement() {
+		Cell playerCell;
+		
 		float deltaTime = Gdx.graphics.getDeltaTime();
 		
 		playerCell = maze.getCell(player.findNextPos());
